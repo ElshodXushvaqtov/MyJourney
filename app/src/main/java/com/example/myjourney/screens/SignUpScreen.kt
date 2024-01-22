@@ -1,9 +1,10 @@
 package com.example.myjourney.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.transition.Visibility
 import androidx.activity.ComponentActivity
-import com.example.myjourney.R
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,14 +24,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TextFieldDefaults.outlinedTextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -54,7 +53,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
+
+@SuppressLint("StaticFieldLeak")
+private lateinit var context: Context
 
 class SignUpScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +77,7 @@ class SignUpScreen : ComponentActivity() {
 
 @Composable
 fun RegistrationPage() {
+    context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,20 +122,24 @@ fun RegistrationPage() {
                 Spacer(modifier = Modifier.padding(3.dp))
                 RegisterEmail()
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterPassword()
+                registerPassword()
                 Spacer(modifier = Modifier.padding(3.dp))
-                RegisterPasswordConfirm()
                 val gradientColor = listOf(Color(0xFF484BF1), Color(0xFF673AB7))
                 val cornerRadius = 16.dp
                 Spacer(modifier = Modifier.padding(10.dp))
                 GradientButton(
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
-                    nameButton = "Create An Account",
                     roundedCornerShape = RoundedCornerShape(topStart = 30.dp, bottomEnd = 30.dp)
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                androidx.compose.material3.TextButton(onClick = {}) {
+                androidx.compose.material3.TextButton(onClick = {
+                    context.startActivity(
+                        Intent(
+                            context, SignInScreen::class.java
+                        )
+                    )
+                }) {
                     Text(
                         text = "Sign In",
                         letterSpacing = 1.sp,
@@ -156,16 +164,15 @@ fun RegistrationPage() {
 private fun GradientButton(
     gradientColors: List<Color>,
     cornerRadius: Dp,
-    nameButton: String,
     roundedCornerShape: RoundedCornerShape
 ) {
-
+    context = LocalContext.current
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp),
         onClick = {
-            //your code
+            context.startActivity(Intent(context, HomeScreen::class.java))
         },
 
         contentPadding = PaddingValues(),
@@ -187,7 +194,7 @@ private fun GradientButton(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = nameButton,
+                text = "Create Account",
                 fontSize = 20.sp,
                 color = Color.White
             )
@@ -198,6 +205,7 @@ private fun GradientButton(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegisterName() {
+
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by rememberSaveable { mutableStateOf("") }
 
@@ -306,15 +314,16 @@ fun RegisterEmail() {
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun RegisterPassword() {
+fun registerPassword(): Boolean {
+    var confirm = false
     val keyboardController = LocalSoftwareKeyboardController.current
-    var password by rememberSaveable { mutableStateOf("") }
-    var passwordHidden by rememberSaveable { mutableStateOf(true) }
+    var passwordMain by rememberSaveable { mutableStateOf("") }
+    var passwordCheck by rememberSaveable { mutableStateOf("") }
     OutlinedTextField(
-        value = password,
-        onValueChange = { password = it },
+        value = passwordMain,
+        onValueChange = { passwordMain = it },
         shape = RoundedCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
         label = {
             Text(
@@ -323,9 +332,6 @@ fun RegisterPassword() {
                 style = MaterialTheme.typography.labelMedium,
             )
         },
-        visualTransformation =
-        if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-        //  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next,
             keyboardType = KeyboardType.Password
@@ -341,17 +347,9 @@ fun RegisterPassword() {
             }
         )
     )
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun RegisterPasswordConfirm() {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var password by rememberSaveable { mutableStateOf("") }
-    var passwordHidden by rememberSaveable { mutableStateOf(true) }
     OutlinedTextField(
-        value = password,
-        onValueChange = { password = it },
+        value = passwordCheck,
+        onValueChange = { passwordCheck = it },
         shape = RoundedCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
         label = {
             Text(
@@ -360,8 +358,6 @@ fun RegisterPasswordConfirm() {
                 style = MaterialTheme.typography.labelMedium,
             )
         },
-        visualTransformation =
-        if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Password
@@ -377,6 +373,12 @@ fun RegisterPasswordConfirm() {
             }
         )
     )
+    if (passwordMain == passwordCheck) {
+        confirm = true
+    } else {
+        confirm = false
+    }
+    return confirm
 }
 
 @Preview(showBackground = true)

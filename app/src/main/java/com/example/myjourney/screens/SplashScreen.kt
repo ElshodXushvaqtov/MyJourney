@@ -20,8 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -30,6 +28,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 import kotlinx.coroutines.delay
+
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 @SuppressLint("CustomSplashScreen")
@@ -38,7 +37,6 @@ class SplashScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyJourneyTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

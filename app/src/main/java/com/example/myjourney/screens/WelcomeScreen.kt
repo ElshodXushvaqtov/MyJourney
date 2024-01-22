@@ -45,7 +45,6 @@ class WelcomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyJourneyTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -79,9 +78,7 @@ fun Welcome() {
                 .size(220.dp, 76.dp)
                 .align(Alignment.BottomCenter),
             shape = RoundedCornerShape(72.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFF65734)
-            )
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF65734))
         ) {
             Text(
                 text = "Sign In",
@@ -99,9 +96,6 @@ fun Welcome() {
                 tint = Color.White
             )
         }
-//        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
-//            Text(text = "Sign Up", color = Color.White)
-//    }
     }
 }
 

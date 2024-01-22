@@ -54,8 +54,6 @@ import androidx.compose.ui.unit.sp
 import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 
-private lateinit var intent: Intent
-
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 
@@ -64,7 +62,6 @@ class SignInScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyJourneyTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -79,7 +76,6 @@ class SignInScreen : ComponentActivity() {
 @Composable
 fun LoginPage() {
     context = LocalContext.current
-    intent = Intent(context, SignUpScreen::class.java)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -137,12 +133,17 @@ fun LoginPage() {
                 GradientButton(
                     gradientColors = gradientColor,
                     cornerRadius = cornerRadius,
-                    nameButton = "Login",
                     roundedCornerShape = RoundedCornerShape(topStart = 30.dp, bottomEnd = 30.dp)
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                androidx.compose.material3.TextButton(onClick = { context.startActivity(intent) }) {
+                androidx.compose.material3.TextButton(onClick = {
+                    context.startActivity(
+                        Intent(
+                            context, SignUpScreen::class.java
+                        )
+                    )
+                }) {
                     Text(
                         text = "Create An Account",
                         letterSpacing = 1.sp,
@@ -174,17 +175,15 @@ fun LoginPage() {
 private fun GradientButton(
     gradientColors: List<Color>,
     cornerRadius: Dp,
-    nameButton: String,
     roundedCornerShape: RoundedCornerShape
 ) {
     context = LocalContext.current
-    intent = Intent(context, HomeScreen::class.java)
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 32.dp, end = 32.dp),
         onClick = {
-            context.startActivity(intent)
+            context.startActivity(Intent(context, HomeScreen::class.java))
         },
 
         contentPadding = PaddingValues(),
@@ -206,7 +205,7 @@ private fun GradientButton(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = nameButton,
+                text = "Login",
                 fontSize = 20.sp,
                 color = Color.White
             )
