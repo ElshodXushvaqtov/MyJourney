@@ -78,7 +78,7 @@ fun Splash() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview2() {
+fun SplashView() {
     MyJourneyTheme {
         Splash()
     }

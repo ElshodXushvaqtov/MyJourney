@@ -291,7 +291,7 @@ fun PasswordOutlinedText() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview4() {
+fun LoginView() {
     MyJourneyTheme {
         LoginPage()
     }

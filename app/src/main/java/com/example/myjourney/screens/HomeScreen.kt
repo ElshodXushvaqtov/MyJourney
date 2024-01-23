@@ -1,23 +1,65 @@
 package com.example.myjourney.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
+
+@SuppressLint("StaticFieldLeak")
+private lateinit var context: Context
 
 class HomeScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyJourneyTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -31,12 +73,235 @@ class HomeScreen : ComponentActivity() {
 
 @Composable
 fun Home() {
+    Scaffold(
+        bottomBar = {
+            NavBar()
+        }
+    ) { innerPadding ->
+        HomeScreenContent(modifier = Modifier.padding(innerPadding))
+    }
+}
 
+@Composable
+private fun HomeScreenContent(
+    modifier: Modifier
+) {
+    context = LocalContext.current
+
+    Column(
+        modifier = modifier
+            .padding(18.dp)
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Home Screen" }
+    ) {
+        Spacer(modifier = Modifier.size(5.dp))
+        ToolbarHome()
+        Header()
+        Categories { context.startActivity(Intent(context, DetailsScreen::class.java)) }
+        Spacer(modifier = Modifier.size(5.dp))
+    }
+}
+
+@Composable
+private fun ToolbarHome() {
+    val gilroy = FontFamily(
+        Font(R.font.gilroy, FontWeight.Normal),
+        Font(R.font.gilroy_bold, FontWeight.Bold)
+    )
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Image(
+            painter = painterResource(id = R.drawable.home_profile),
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Column {
+            Text(
+                text = "Welcome Home", style = TextStyle(
+                    fontFamily = gilroy,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 12.sp,
+                    color = Color(0xFF73848C)
+                )
+            )
+            Text(
+                text = "Elshodbek Xushvaqtov", style = TextStyle(
+                    fontFamily = gilroy,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 24.sp,
+                    color = Color(0xFF452933)
+                )
+            )
+        }
+        Image(painter = painterResource(id = R.drawable.notification), contentDescription = null)
+    }
+}
+
+@Composable
+fun Header() {
+    val gilroy = FontFamily(
+        Font(R.font.gilroy, FontWeight.Normal),
+        Font(R.font.gilroy_bold, FontWeight.Bold)
+    )
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            painter = painterResource(id = R.drawable.home_main),
+            contentDescription = null,
+            modifier = Modifier
+                .size(342.dp, 285.dp)
+                .align(Alignment.Center),
+        )
+
+        Row(
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .clickable { }
+                .size(296.dp, 80.dp)
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
+                .padding(24.dp)
+                .align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Where to go", style = TextStyle(
+                    fontFamily = gilroy,
+                    fontWeight = FontWeight.W400,
+                    fontSize = 24.sp,
+                    color = Color(0x8073848C)
+                )
+            )
+            Spacer(modifier = Modifier.weight(1F))
+            Image(painter = painterResource(id = R.drawable.search), contentDescription = null)
+        }
+    }
+}
+
+@Composable
+private fun Categories(onclick: () -> Unit) {
+    val gilroy = FontFamily(
+        Font(R.font.gilroy, FontWeight.Normal),
+        Font(R.font.gilroy_bold, FontWeight.Bold)
+    )
+    Spacer(modifier = Modifier.size(24.dp))
+    Column(Modifier.fillMaxWidth()) {
+        Text(
+            text = "Popular Categories", style = TextStyle(
+                fontFamily = gilroy,
+                fontWeight = FontWeight.W600,
+                fontSize = 18.sp,
+                color = Color(0xFF452933)
+            )
+        )
+        Spacer(modifier = Modifier.size(16.dp))
+        Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
+            Category(paint = R.drawable.cat_1, text = "Mountain", onclick)
+            Category(paint = R.drawable.cat_2, text = "Adventure", onclick)
+            Category(paint = R.drawable.cat_3, text = "Beach", onclick)
+            Category(paint = R.drawable.cat_4, text = "City", onclick)
+        }
+    }
+}
+
+@Composable
+fun Category(@DrawableRes paint: Int, text: String, onclick: () -> Unit) {
+    val gilroy = FontFamily(
+        Font(R.font.gilroy, FontWeight.Normal),
+        Font(R.font.gilroy_bold, FontWeight.Bold)
+    )
+    Column(
+        modifier = Modifier.defaultMinSize(minWidth = 64.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = paint),
+            contentDescription = null,
+            modifier = Modifier.size(64.dp)
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Text(
+            text = text, style = TextStyle(
+                fontFamily = gilroy,
+                fontWeight = FontWeight.W400,
+                fontSize = 12.sp,
+                color = Color(0xFF73848C)
+            )
+        )
+    }
+}
+
+@Composable
+private fun NavBar() {
+    Modifier
+        .padding(end = 20.dp)
+        .fillMaxWidth()
+        .defaultMinSize(minWidth = 327.dp, minHeight = 67.dp)
+        .border(shape = RoundedCornerShape(12.dp), width = 1.dp, color = Color.Transparent)
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .defaultMinSize(minWidth = 370.dp, minHeight = 67.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            Spacer(modifier = Modifier.size(15.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+                    .align(Alignment.CenterVertically)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.home),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp)
+                )
+            }
+            Spacer(modifier = Modifier.size(12.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ticket),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(30.dp)
+                    .height(30.dp)
+            )
+            Spacer(modifier = Modifier.size(90.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.saved),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(30.dp)
+                    .height(30.dp)
+            )
+            Spacer(modifier = Modifier.size(12.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(30.dp)
+                    .height(30.dp)
+            )
+        }
+
+        Image(
+            painter = painterResource(id = R.drawable.search_bar),
+            contentDescription = null,
+            modifier = Modifier
+                .align(
+                    Alignment.Center
+                )
+                .offset(y = (-20).dp)
+                .width(50.dp)
+                .height(50.dp)
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview6() {
+fun HomeView() {
     MyJourneyTheme {
         Home()
     }

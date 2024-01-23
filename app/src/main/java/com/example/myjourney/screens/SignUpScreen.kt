@@ -122,7 +122,7 @@ fun RegistrationPage() {
                 Spacer(modifier = Modifier.padding(3.dp))
                 RegisterEmail()
                 Spacer(modifier = Modifier.padding(3.dp))
-                registerPassword()
+                RegisterPassword()
                 Spacer(modifier = Modifier.padding(3.dp))
                 val gradientColor = listOf(Color(0xFF484BF1), Color(0xFF673AB7))
                 val cornerRadius = 16.dp
@@ -316,8 +316,7 @@ fun RegisterEmail() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun registerPassword(): Boolean {
-    var confirm = false
+fun RegisterPassword() {
     val keyboardController = LocalSoftwareKeyboardController.current
     var passwordMain by rememberSaveable { mutableStateOf("") }
     var passwordCheck by rememberSaveable { mutableStateOf("") }
@@ -373,17 +372,17 @@ fun registerPassword(): Boolean {
             }
         )
     )
-    if (passwordMain == passwordCheck) {
-        confirm = true
-    } else {
-        confirm = false
-    }
-    return confirm
+//    if (passwordMain == passwordCheck) {
+//        confirm = true
+//    } else {
+//        confirm = false
+//    }
+//    return confirm
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview3() {
+fun RegistrationView() {
     MyJourneyTheme {
         RegistrationPage()
     }
