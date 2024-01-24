@@ -82,9 +82,11 @@ private fun DetailScreenContent(modifier: Modifier) {
         Image(
             painter = painterResource(id = R.drawable.img_detail),
             contentDescription = null,
-            modifier = Modifier.clip(
-                RoundedCornerShape(10.dp)
-            ).wrapContentSize()
+            modifier = Modifier
+                .clip(
+                    RoundedCornerShape(10.dp)
+                )
+                .wrapContentSize()
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(
