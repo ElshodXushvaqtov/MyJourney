@@ -25,10 +25,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -50,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myjourney.R
+import com.example.myjourney.SearchScreen
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 
 @SuppressLint("StaticFieldLeak")
@@ -143,12 +146,13 @@ fun Header() {
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
     )
+    context = LocalContext.current
     Box(modifier = Modifier.fillMaxWidth()) {
         Image(
             painter = painterResource(id = R.drawable.home_main),
             contentDescription = null,
             modifier = Modifier
-                .size(342.dp, 285.dp)
+                .size(340.dp, 285.dp)
                 .align(Alignment.Center),
         )
 
@@ -156,8 +160,15 @@ fun Header() {
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .clickable { }
-                .size(296.dp, 80.dp)
+                .clickable(onClick = {
+                    context.startActivity(
+                        Intent(
+                            context,
+                            SearchScreen::class.java
+                        )
+                    )
+                })
+                .size(300.dp, 80.dp)
                 .background(Color.White, shape = RoundedCornerShape(16.dp))
                 .padding(24.dp)
                 .align(Alignment.BottomCenter),
@@ -195,10 +206,34 @@ private fun Categories(onclick: () -> Unit) {
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-            Category(paint = R.drawable.cat_1, text = "Mountain", onclick)
-            Category(paint = R.drawable.cat_2, text = "Adventure", onclick)
-            Category(paint = R.drawable.cat_3, text = "Beach", onclick)
-            Category(paint = R.drawable.cat_4, text = "City", onclick)
+            Category(paint = R.drawable.cat_1, text = "Mountain", onclick = {
+                context.startActivity(
+                    Intent(
+                        context, DetailsScreen::class.java
+                    )
+                )
+            })
+            Category(paint = R.drawable.cat_2, text = "Adventure", onclick = {
+                context.startActivity(
+                    Intent(
+                        context, DetailsScreen::class.java
+                    )
+                )
+            })
+            Category(paint = R.drawable.cat_3, text = "Beach", onclick = {
+                context.startActivity(
+                    Intent(
+                        context, DetailsScreen::class.java
+                    )
+                )
+            })
+            Category(paint = R.drawable.cat_4, text = "City", onclick = {
+                context.startActivity(
+                    Intent(
+                        context, DetailsScreen::class.java
+                    )
+                )
+            })
         }
     }
 }
@@ -209,15 +244,22 @@ fun Category(@DrawableRes paint: Int, text: String, onclick: () -> Unit) {
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
     )
+    context = LocalContext.current
     Column(
         modifier = Modifier.defaultMinSize(minWidth = 64.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = paint),
-            contentDescription = null,
+        IconButton(
+            onClick = { onclick() },
             modifier = Modifier.size(64.dp)
-        )
+        ) {
+            Image(
+                painter = painterResource(id = paint),
+                contentDescription = null,
+                modifier = Modifier.size(64.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = text, style = TextStyle(
@@ -232,6 +274,7 @@ fun Category(@DrawableRes paint: Int, text: String, onclick: () -> Unit) {
 
 @Composable
 private fun NavBar() {
+    context = LocalContext.current
     Modifier
         .padding(end = 20.dp)
         .fillMaxWidth()
@@ -244,57 +287,89 @@ private fun NavBar() {
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Spacer(modifier = Modifier.size(15.dp))
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-                    .align(Alignment.CenterVertically)
-            ) {
+            IconButton(onClick = {}, content = {
                 Image(
                     painter = painterResource(id = R.drawable.home),
                     contentDescription = null,
                     modifier = Modifier
+                        .align(Alignment.CenterVertically)
                         .width(30.dp)
                         .height(30.dp)
                 )
-            }
-            Spacer(modifier = Modifier.size(12.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.ticket),
-                contentDescription = null,
+            },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .width(30.dp)
-                    .height(30.dp)
+                    .width(40.dp)
+                    .height(40.dp)
+            )
+            Spacer(modifier = Modifier.size(12.dp))
+            IconButton(
+                onClick = { context.startActivity(Intent(context, DetailsScreen::class.java)) },
+                content = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ticket),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(30.dp)
+                            .height(30.dp)
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(40.dp)
+                    .height(40.dp)
             )
             Spacer(modifier = Modifier.size(90.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.saved),
-                contentDescription = null,
+
+            IconButton(onClick = {}, content = {
+                Icon(
+                    painter = painterResource(id = R.drawable.saved),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .width(30.dp)
+                        .height(30.dp)
+                )
+            },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .width(30.dp)
-                    .height(30.dp)
+                    .width(40.dp)
+                    .height(40.dp)
             )
+
             Spacer(modifier = Modifier.size(12.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = null,
+            IconButton(onClick = {}, content = {
+                Icon(
+                    painter = painterResource(id = R.drawable.profile),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .width(30.dp)
+                        .height(30.dp)
+                )
+            },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .width(30.dp)
-                    .height(30.dp)
+                    .width(40.dp)
+                    .height(40.dp)
             )
         }
-
-        Image(
-            painter = painterResource(id = R.drawable.search_bar),
-            contentDescription = null,
-            modifier = Modifier
-                .align(
-                    Alignment.Center
+        IconButton(onClick = { context.startActivity(Intent(context, SearchScreen::class.java)) },
+            content = {
+                Image(
+                    painter = painterResource(id = R.drawable.search_bar),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .width(50.dp)
+                        .height(50.dp)
                 )
-                .offset(y = (-20).dp)
+            },
+            modifier = Modifier
+                .align(Alignment.Center)
                 .width(50.dp)
                 .height(50.dp)
+                .offset(y = (-20).dp)
         )
     }
 }
