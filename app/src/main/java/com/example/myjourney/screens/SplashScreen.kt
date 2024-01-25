@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -31,6 +33,7 @@ import kotlinx.coroutines.delay
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
+
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,12 +67,12 @@ fun Splash() {
         LottieAnimation(
             composition = lottieComp,
             iterations = LottieConstants.IterateForever,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.size(width = 150.dp, height = 150.dp)
         )
     }
     LaunchedEffect(key1 = progress) {
         delay(4000)
-        val intent = Intent(context,WelcomeScreen::class.java)
+        val intent = Intent(context, WelcomeScreen::class.java)
         context.startActivity(intent)
     }
 
