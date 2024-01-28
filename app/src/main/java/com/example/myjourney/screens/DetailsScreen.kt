@@ -1,6 +1,9 @@
 package com.example.myjourney.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -28,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -42,6 +46,9 @@ import androidx.navigation.NavHostController
 import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 
+@SuppressLint("StaticFieldLeak")
+private lateinit var context: Context
+
 class DetailsScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +58,13 @@ class DetailsScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DetailScreen()
+                    val placeImg = intent.getIntExtra("placeImg", 0)
+                    val placeName = intent.getStringExtra("placeName")
+                    val placeDescription = intent.getStringExtra("placeDescription")
+                    if (placeName != null && placeDescription != null) {
+                        DetailScreen(placeImg, placeName, placeDescription)
+                    }
+                    Log.d("AAA", "$placeName" + "\n$placeDescription")
                 }
             }
         }
@@ -59,14 +72,19 @@ class DetailsScreen : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen() {
+fun DetailScreen(img: Int, name: String, description: String) {
     Scaffold { innerPadding ->
-        DetailScreenContent(modifier = Modifier.padding(innerPadding))
+        DetailScreenContent(modifier = Modifier.padding(innerPadding), img, name, description)
     }
 }
 
 @Composable
-private fun DetailScreenContent(modifier: Modifier) {
+private fun DetailScreenContent(
+    modifier: Modifier,
+    pImg: Int,
+    pName: String,
+    pDescription: String
+) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
@@ -80,13 +98,13 @@ private fun DetailScreenContent(modifier: Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.img_detail),
+            painter = painterResource(id = pImg),
             contentDescription = null,
             modifier = Modifier
                 .clip(
                     RoundedCornerShape(10.dp)
                 )
-                .wrapContentSize()
+                .fillMaxSize()
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(
@@ -95,7 +113,7 @@ private fun DetailScreenContent(modifier: Modifier) {
                 .padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Tashkent", style = TextStyle(
+                text = pName, style = TextStyle(
                     fontFamily = gilroy,
                     fontWeight = FontWeight.W600,
                     fontSize = 18.sp,
@@ -120,7 +138,7 @@ private fun DetailScreenContent(modifier: Modifier) {
         }
         Spacer(modifier = Modifier.size(16.dp))
         Text(
-            text = "Tarixiy va Zamonaviy! Hammasi bittada.",
+            text = pDescription,
             style = TextStyle(
                 fontFamily = gilroy,
                 fontWeight = FontWeight.W400,
@@ -235,6 +253,6 @@ private fun MoreImages() {
 @Composable
 fun DetailsPageView() {
     MyJourneyTheme {
-        DetailScreen()
+        DetailScreen(0,"0","0")
     }
 }
