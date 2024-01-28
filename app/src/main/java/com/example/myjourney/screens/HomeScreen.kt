@@ -218,10 +218,10 @@ private fun Categories() {
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-            Category(paint = R.drawable.cat_1, text = "Mountain")
-            Category(paint = R.drawable.cat_2, text = "Adventure")
-            Category(paint = R.drawable.cat_3, text = "Beach")
-            Category(paint = R.drawable.cat_4, text = "City")
+            Category(paint = R.drawable.cat_1, text = "Madaniy")
+            Category(paint = R.drawable.cat_2, text = "Adabiy")
+            Category(paint = R.drawable.cat_3, text = "Ziyorat")
+            Category(paint = R.drawable.cat_4, text = "Tabiat")
         }
     }
 }
@@ -420,7 +420,8 @@ fun addPlaces(): MutableList<Places> {
             "Hazrati Imom Majmuasi",
             R.drawable.hazrati_imom,
             "Hazrati Imom majmuasi 16303Toshkentning diniy yodgorliklaridan biri bu aholi orasida Xast-Imom nomi bilan mashhur Hazrati Imom ansamblidir. Maydon eski shaharning orqasida joylashgan bo‘lib, u 1966 yildagi kuchli zilziladan omon qolgan." +
-                    "\n Majmua olim va din arbobi, birinchi toshkentlik imom Kaffol ash Shoshiy dafn etilgan joyda qurilgan."
+                    "\n Majmua olim va din arbobi, birinchi toshkentlik imom Kaffol ash Shoshiy dafn etilgan joyda qurilgan.",
+            "Ziyorat"
         )
     )
     placeList.add(
@@ -428,7 +429,7 @@ fun addPlaces(): MutableList<Places> {
             "Imom Al-Buxoriy Maqbarasi",
             R.drawable.al_buxoriy,
             "Musulmon olamining taniqli muhaddislaridan biri Imom al-Buxoriy 810 yil 21-iyulda Buxoroda tavallud topgan, 870 yilda Samarqanddan 25 km uzoqda joylashgan Xartang qishlog'ida (Samarqand viloyatining hozirgi Chelak tumani) vafot etgan va o sha yerda dafn etilgan.\n" +
-                    " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi."
+                    " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi.", "Ziyorat"
         )
     )
     placeList.add(
@@ -436,7 +437,8 @@ fun addPlaces(): MutableList<Places> {
             "Oq Saroy",
             R.drawable.oq_saroy,
             "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
-                    "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan."
+                    "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan.",
+            "Madaniy"
         )
     )
     placeList.add(
@@ -444,7 +446,17 @@ fun addPlaces(): MutableList<Places> {
             "Ichan Qal'a",
             R.drawable.ichan_qala,
             "Ichan Qal’a 4735O‘tmishga tashrif buyurishni xohlaysizmi? Eski ko‘chalarni aylanib o‘tib, haqiqiy tarixiy shaharni ko‘rishni istaysizmi? Bu orzuni haqiqatga aylantirish mumkin, siz ko‘zingiz bilan haqiqiy sharq ertagini ko‘rish  uchun\n" +
-                    " Xivaga – ko‘plab madrasalar, masjidlar, minoralar,  hunarmandchilik ustaxonalari va mehmonxonalari bilan  ochiq-osmon ostidagi  O‘zbekistonning javohiri bo‘lgan Ichan-Qal’a shahriga kelishingiz kerak."
+                    " Xivaga – ko‘plab madrasalar, masjidlar, minoralar,  hunarmandchilik ustaxonalari va mehmonxonalari bilan  ochiq-osmon ostidagi  O‘zbekistonning javohiri bo‘lgan Ichan-Qal’a shahriga kelishingiz kerak.",
+            "Madaniy"
+        )
+    )
+    placeList.add(
+        Places(
+            "Bildirsoy tog‘-chang‘i kurorti",
+            R.drawable.katta_chimyon,
+            "Bildirsoy tog‘-chang‘i kurortidagi qor qoplamasi yevropadagi qordan farq qiladi. Kontinental iqlim, bir tomondan Himolay tog‘lari , ikkinchi tomondan Sibir haddan tashqari haroratni va kuchli qor yog‘ishini taʼminlaydi." +
+                    "\nBu yerdagi qor eng zo‘r, quruq va sovuq, chang‘i uchish uchun juda yaxshi hamda mutaxassislarning fikriga ko‘ra dunyodagi eng ajoyib qorlardan biri hisoblanadi.",
+            "Tabiat"
         )
     )
     return placeList

@@ -104,7 +104,7 @@ private fun DetailScreenContent(
                 .clip(
                     RoundedCornerShape(10.dp)
                 )
-                .fillMaxSize()
+
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(

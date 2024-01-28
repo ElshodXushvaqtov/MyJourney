@@ -1,3 +1,3 @@
 package com.example.myjourney.data
 
-data class Places(var name: String, var img: Int, var description: String)
+data class Places(var name: String, var img: Int, var description: String, var category:String)
