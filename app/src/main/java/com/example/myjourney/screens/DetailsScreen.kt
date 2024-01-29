@@ -7,7 +7,9 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +22,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -61,8 +67,9 @@ class DetailsScreen : ComponentActivity() {
                     val placeImg = intent.getIntExtra("placeImg", 0)
                     val placeName = intent.getStringExtra("placeName")
                     val placeDescription = intent.getStringExtra("placeDescription")
-                    if (placeName != null && placeDescription != null) {
-                        DetailScreen(placeImg, placeName, placeDescription)
+                    val images = intent.getIntArrayExtra("moreImages")
+                    if (placeName != null && placeDescription != null && images != null) {
+                        DetailScreen(placeImg, placeName, placeDescription, images)
                     }
                     Log.d("AAA", "$placeName" + "\n$placeDescription")
                 }
@@ -72,9 +79,15 @@ class DetailsScreen : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen(img: Int, name: String, description: String) {
+fun DetailScreen(img: Int, name: String, description: String, images: IntArray) {
     Scaffold { innerPadding ->
-        DetailScreenContent(modifier = Modifier.padding(innerPadding), img, name, description)
+        DetailScreenContent(
+            modifier = Modifier.padding(innerPadding),
+            img,
+            name,
+            description,
+            images
+        )
     }
 }
 
@@ -83,7 +96,8 @@ private fun DetailScreenContent(
     modifier: Modifier,
     pImg: Int,
     pName: String,
-    pDescription: String
+    pDescription: String,
+    moreImages: IntArray
 ) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
@@ -148,7 +162,7 @@ private fun DetailScreenContent(
             modifier = Modifier.padding(horizontal = 12.dp)
         )
         Spacer(modifier = Modifier.size(16.dp))
-        MoreImages()
+        MoreImages(moreImages)
         Spacer(modifier = Modifier.size(55.dp))
         Row(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(start = 10.dp)) {
@@ -203,7 +217,7 @@ private fun DetailScreenContent(
 }
 
 @Composable
-private fun MoreImages() {
+private fun MoreImages(more: IntArray) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
@@ -223,36 +237,93 @@ private fun MoreImages() {
             )
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-            Image(
-                painter = painterResource(id = R.drawable.more_1),
-                contentDescription = null,
-                modifier = Modifier.size(70.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.more_2),
-                contentDescription = null,
-                modifier = Modifier.size(70.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.more_3),
-                contentDescription = null,
-                modifier = Modifier.size(70.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.more_4),
-                contentDescription = null,
-                modifier = Modifier.size(70.dp)
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            Arrangement.SpaceBetween
+        ) {
+            Card(
+                modifier = Modifier.size(width = 85.dp, height = 80.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                )
+            ) {
+
+                Image(
+                    painter = painterResource(id = more[0]),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clip(shape = RoundedCornerShape(10))
+                )
+            }
+            Card(
+                modifier = Modifier.size(width = 95.dp, height = 80.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                )
+            ) {
+
+                Image(
+                    painter = painterResource(id = more[1]),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clip(shape = RoundedCornerShape(10))
+                )
+            }
+            Card(
+                modifier = Modifier.size(width = 85.dp, height = 80.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                )
+            ) {
+
+                Image(
+                    painter = painterResource(id = more[2]),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clip(shape = RoundedCornerShape(10))
+                )
+            }
+            Card(
+                modifier = Modifier.size(width = 80.dp, height = 65.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                )
+            ) {
+
+                Image(
+                    painter = painterResource(id = more[3]),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clip(shape = RoundedCornerShape(10)),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }
 
+@Composable
+fun MoreItem(images: IntArray) {
+    Row {
+
+    }
+    Image(
+        painter = painterResource(id = images[1]),
+        contentDescription = null,
+        modifier = Modifier
+            .size(70.dp)
+            .clip(shape = RoundedCornerShape(50))
+    )
+}
 
 @Preview(showBackground = true)
 @Composable
 fun DetailsPageView() {
     MyJourneyTheme {
-        DetailScreen(0,"0","0")
+//        DetailScreen(0, "0", "0")
     }
 }

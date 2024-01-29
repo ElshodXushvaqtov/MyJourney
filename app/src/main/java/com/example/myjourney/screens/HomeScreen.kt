@@ -132,10 +132,10 @@ private fun ToolbarHome() {
         Spacer(modifier = Modifier.size(16.dp))
         Column {
             Text(
-                text = "Welcome Home", style = TextStyle(
+                text = "Assalomu aleykum", style = TextStyle(
                     fontFamily = gilroy,
                     fontWeight = FontWeight.W400,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     color = Color(0xFF73848C)
                 )
             )
@@ -187,7 +187,7 @@ fun Header() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Where to go", style = TextStyle(
+                text = "Manzilni qidirish", style = TextStyle(
                     fontFamily = gilroy,
                     fontWeight = FontWeight.W400,
                     fontSize = 24.sp,
@@ -209,7 +209,7 @@ private fun Categories() {
     Spacer(modifier = Modifier.size(24.dp))
     Column(Modifier.fillMaxWidth()) {
         Text(
-            text = "Popular Categories", style = TextStyle(
+            text = "Mashhur Manzillar", style = TextStyle(
                 fontFamily = gilroy,
                 fontWeight = FontWeight.W600,
                 fontSize = 18.sp,
@@ -239,12 +239,12 @@ fun Category(@DrawableRes paint: Int, text: String) {
     ) {
         IconButton(
             onClick = {},
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(65.dp)
         ) {
             Image(
                 painter = painterResource(id = paint),
                 contentDescription = null,
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(65.dp)
             )
         }
 
@@ -253,7 +253,7 @@ fun Category(@DrawableRes paint: Int, text: String) {
             text = text, style = TextStyle(
                 fontFamily = gilroy,
                 fontWeight = FontWeight.W400,
-                fontSize = 12.sp,
+                fontSize = 13.sp,
                 color = Color(0xFF73848C)
             )
         )
@@ -379,6 +379,10 @@ fun Recommendations() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecommendationsItem(places: Places) {
+    val gilroy = FontFamily(
+        Font(R.font.gilroy, FontWeight.Normal),
+        Font(R.font.gilroy_bold, FontWeight.Bold)
+    )
     context = LocalContext.current
     intent = Intent(context, DetailsScreen::class.java)
 
@@ -398,6 +402,7 @@ fun RecommendationsItem(places: Places) {
                 intent.putExtra("placeImg", places.img)
                 intent.putExtra("placeName", places.name)
                 intent.putExtra("placeDescription", places.description)
+                intent.putExtra("moreImages", places.moreImages)
                 Log.d("BBB", places.name + "\n${places.description}")
                 context.startActivity(intent)
             }
@@ -409,7 +414,14 @@ fun RecommendationsItem(places: Places) {
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = places.name)
+        Text(
+            text = places.name, style = TextStyle(
+                fontFamily = gilroy,
+                fontWeight = FontWeight.W600,
+                fontSize = 16.sp,
+                color = Color(0xFF452933)
+            )
+        )
     }
 }
 
@@ -421,7 +433,13 @@ fun addPlaces(): MutableList<Places> {
             R.drawable.hazrati_imom,
             "Hazrati Imom majmuasi 16303Toshkentning diniy yodgorliklaridan biri bu aholi orasida Xast-Imom nomi bilan mashhur Hazrati Imom ansamblidir. Maydon eski shaharning orqasida joylashgan bo‘lib, u 1966 yildagi kuchli zilziladan omon qolgan." +
                     "\n Majmua olim va din arbobi, birinchi toshkentlik imom Kaffol ash Shoshiy dafn etilgan joyda qurilgan.",
-            "Ziyorat"
+            "Ziyorat",
+            intArrayOf(
+                R.drawable.hazrati_imom,
+                R.drawable.hazrati_imom2,
+                R.drawable.hazrati_imom3,
+                R.drawable.hazrati_imom4
+            )
         )
     )
     placeList.add(
@@ -429,7 +447,14 @@ fun addPlaces(): MutableList<Places> {
             "Imom Al-Buxoriy Maqbarasi",
             R.drawable.al_buxoriy,
             "Musulmon olamining taniqli muhaddislaridan biri Imom al-Buxoriy 810 yil 21-iyulda Buxoroda tavallud topgan, 870 yilda Samarqanddan 25 km uzoqda joylashgan Xartang qishlog'ida (Samarqand viloyatining hozirgi Chelak tumani) vafot etgan va o sha yerda dafn etilgan.\n" +
-                    " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi.", "Ziyorat"
+                    " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi.",
+            "Ziyorat",
+            intArrayOf(
+                R.drawable.al_buxoriy,
+                R.drawable.al_buxoriy2,
+                R.drawable.al_buxoriy3,
+                R.drawable.al_buxoriy4
+            )
         )
     )
     placeList.add(
@@ -438,7 +463,13 @@ fun addPlaces(): MutableList<Places> {
             R.drawable.oq_saroy,
             "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
                     "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan.",
-            "Madaniy"
+            "Madaniy",
+            intArrayOf(
+                R.drawable.oq_saroy,
+                R.drawable.oq_saroy2,
+                R.drawable.oq_saroy3,
+                R.drawable.oq_saroy4
+            )
         )
     )
     placeList.add(
@@ -447,7 +478,13 @@ fun addPlaces(): MutableList<Places> {
             R.drawable.ichan_qala,
             "Ichan Qal’a 4735O‘tmishga tashrif buyurishni xohlaysizmi? Eski ko‘chalarni aylanib o‘tib, haqiqiy tarixiy shaharni ko‘rishni istaysizmi? Bu orzuni haqiqatga aylantirish mumkin, siz ko‘zingiz bilan haqiqiy sharq ertagini ko‘rish  uchun\n" +
                     " Xivaga – ko‘plab madrasalar, masjidlar, minoralar,  hunarmandchilik ustaxonalari va mehmonxonalari bilan  ochiq-osmon ostidagi  O‘zbekistonning javohiri bo‘lgan Ichan-Qal’a shahriga kelishingiz kerak.",
-            "Madaniy"
+            "Madaniy",
+            intArrayOf(
+                R.drawable.ichan_qala,
+                R.drawable.ichan_qala,
+                R.drawable.ichan_qala,
+                R.drawable.ichan_qala
+            )
         )
     )
     placeList.add(
@@ -456,7 +493,13 @@ fun addPlaces(): MutableList<Places> {
             R.drawable.katta_chimyon,
             "Bildirsoy tog‘-chang‘i kurortidagi qor qoplamasi yevropadagi qordan farq qiladi. Kontinental iqlim, bir tomondan Himolay tog‘lari , ikkinchi tomondan Sibir haddan tashqari haroratni va kuchli qor yog‘ishini taʼminlaydi." +
                     "\nBu yerdagi qor eng zo‘r, quruq va sovuq, chang‘i uchish uchun juda yaxshi hamda mutaxassislarning fikriga ko‘ra dunyodagi eng ajoyib qorlardan biri hisoblanadi.",
-            "Tabiat"
+            "Tabiat",
+            intArrayOf(
+                R.drawable.katta_chimyon,
+                R.drawable.katta_chimyon,
+                R.drawable.katta_chimyon,
+                R.drawable.katta_chimyon
+            )
         )
     )
     return placeList
