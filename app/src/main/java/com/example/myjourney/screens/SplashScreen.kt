@@ -67,7 +67,7 @@ fun Splash() {
         LottieAnimation(
             composition = lottieComp,
             iterations = LottieConstants.IterateForever,
-            modifier = Modifier.size(width = 150.dp, height = 150.dp)
+            modifier = Modifier.size(width = 200.dp, height = 200.dp)
         )
     }
     LaunchedEffect(key1 = progress) {

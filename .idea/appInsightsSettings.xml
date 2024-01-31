@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.myjourney" />
+                  <option name="mobileSdkAppId" value="1:822578261694:android:62c08fbf4ce39d328238ef" />
+                  <option name="projectId" value="easyjourney-668aa" />
+                  <option name="projectNumber" value="822578261694" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

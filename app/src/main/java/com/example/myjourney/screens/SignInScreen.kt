@@ -4,58 +4,55 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.myjourney.R
+import com.example.myjourney.data.UserData
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
+private lateinit var auth: FirebaseAuth
+private var mAuth = FirebaseAuth.getInstance()
 
 class SignInScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,236 +60,149 @@ class SignInScreen : ComponentActivity() {
         setContent {
             MyJourneyTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginPage()
+                    auth = FirebaseAuth.getInstance()
+                    context = LocalContext.current
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken("822578261694-vsbbdi0ppijrit24o60bie8vepn16j84.apps.googleusercontent.com")
+                        .requestEmail()
+                        .build()
+                    val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                color = Color.Transparent,
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_sign_in),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .height(180.dp)
+                                .fillMaxWidth(),
+
+                            )
+
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.White,
+                            ),
+                            modifier = Modifier
+                                .width(220.dp)
+                                .border(1.dp, Color.Black, RoundedCornerShape(30.dp))
+                                .padding(5.dp),
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                IconButton(onClick = {
+                                    val signInIntent = mGoogleSignInClient.signInIntent
+                                    startActivityForResult(signInIntent, 1)
+                                }) {
+                                    Image(
+                                        painterResource(id = R.drawable.google),
+                                        contentDescription = null
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(text = "Sign in with Google")
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun LoginPage() {
-    context = LocalContext.current
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(
-                color = Color.Transparent,
-            )
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    shape = RoundedCornerShape(25.dp, 5.dp, 25.dp, 5.dp)
-                )
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
 
-        ) {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account.idToken)
+                Log.d("TAG", "onActivityResult: ")
+            } catch (e: ApiException) {
+                Log.d("TAG", "error: $e")
 
-            Image(
-                painter = painterResource(id = R.drawable.user_sign_in),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .height(180.dp)
-                    .fillMaxWidth(),
-
-                )
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
-
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(50.dp))
-                Text(
-                    text = "Sign In",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(top = 130.dp)
-                        .fillMaxWidth(),
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                UsernameOutlinedText()
-                Spacer(modifier = Modifier.padding(3.dp))
-                PasswordOutlinedText()
-                val gradientColor = listOf(Color(0xFF484BF1), Color(0xFF673AB7))
-                val cornerRadius = 16.dp
-
-
-                Spacer(modifier = Modifier.padding(10.dp))
-
-                GradientButton(
-                    gradientColors = gradientColor,
-                    cornerRadius = cornerRadius,
-                    roundedCornerShape = RoundedCornerShape(topStart = 30.dp, bottomEnd = 30.dp)
-                )
-
-                Spacer(modifier = Modifier.padding(10.dp))
-                androidx.compose.material3.TextButton(onClick = {
-                    context.startActivity(
-                        Intent(
-                            context, SignUpScreen::class.java
-                        )
-                    )
-                }) {
-                    Text(
-                        text = "Create An Account",
-                        letterSpacing = 1.sp,
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
-
-
-                Spacer(modifier = Modifier.padding(5.dp))
-                androidx.compose.material3.TextButton(onClick = {}) {
-                    Text(
-                        text = "Reset Password",
-                        letterSpacing = 1.sp,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
-                Spacer(modifier = Modifier.padding(20.dp))
             }
-
-
-        }
-
-    }
-
-
-}
-
-@Composable
-private fun GradientButton(
-    gradientColors: List<Color>,
-    cornerRadius: Dp,
-    roundedCornerShape: RoundedCornerShape
-) {
-    context = LocalContext.current
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp),
-        onClick = {
-            context.startActivity(Intent(context, HomeScreen::class.java))
-        },
-
-        contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        shape = RoundedCornerShape(cornerRadius)
-    ) {
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-                    shape = roundedCornerShape
-                )
-                .clip(roundedCornerShape)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Login",
-                fontSize = 20.sp,
-                color = Color.White
-            )
         }
     }
-}
+
+    private fun firebaseAuthWithGoogle(idToken: String?) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+                    val user = auth.currentUser
+                    val userData = UserData(
+                        user?.displayName,
+                        user?.uid,
+                        user?.email,
+                        user?.photoUrl.toString()
+                    )
+                    Toast.makeText(context, "Successfully signed in!", Toast.LENGTH_SHORT)
+                        .show()
+                    val reference = Firebase.database.reference.child("users")
+                    var b = true
+                    reference.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val children = snapshot.children
+                            children.forEach {
+                                val user = it.getValue(UserData::class.java)
+                                if (user != null && user.uid == userData.uid) {
+                                    b = false
+                                }
+                            }
+                            if (b) {
+                                setUser(userData)
+                            }
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.d("TAG", "onCancelled: ${error.message}")
+                        }
+
+                    })
+
+                    val i = Intent(this, HomeScreen::class.java)
+                    i.putExtra("uid", userData.uid)
+                    i.putExtra("userEmail", userData.email)
+                    i.putExtra("userName", userData.name)
+                    i.putExtra("userPhoto", userData.photo)
+                    startActivity(i)
 
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun UsernameOutlinedText() {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
-        shape = RoundedCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
-        label = {
-            Text(
-                "Name or Email Address",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
-            )
-        },
-        placeholder = { Text(text = "Name or Email Address") },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next,
-            keyboardType = KeyboardType.Email
-        ),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-        ),
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth(0.8f),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                // do something here
+                } else {
+                    Log.d("TAG", "error: Authentication Failed.")
+                }
             }
-        )
+    }
 
-    )
-}
+    private fun setUser(userData: UserData) {
+        val userIdReference = Firebase.database.reference
+            .child("users").child(userData.uid ?: "")
+        userIdReference.setValue(userData).addOnSuccessListener {
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun PasswordOutlinedText() {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var text by rememberSaveable { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
-        shape = RoundedCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
-        label = {
-            Text(
-                "Password",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.labelMedium,
-            )
-        },
-        placeholder = { Text(text = "Name or Email Address") },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Next,
-            keyboardType = KeyboardType.Password
-        ),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-        ),
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth(0.8f),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-            }
-        )
-
-    )
+            val i = Intent(this, HomeScreen::class.java)
+            i.putExtra("uid", userData.uid)
+            startActivity(i)
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun LoginView() {
     MyJourneyTheme {
-        LoginPage()
+
     }
 }

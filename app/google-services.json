@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "822578261694",
+    "project_id": "easyjourney-668aa",
+    "storage_bucket": "easyjourney-668aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822578261694:android:62c08fbf4ce39d328238ef",
+        "android_client_info": {
+          "package_name": "com.example.myjourney"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH8ufmvLL07Pj6b36AAEj-_rST4cfGreE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
