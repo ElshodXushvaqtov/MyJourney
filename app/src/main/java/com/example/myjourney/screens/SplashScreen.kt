@@ -71,7 +71,7 @@ fun Splash() {
         )
     }
     LaunchedEffect(key1 = progress) {
-        delay(4000)
+        delay(3500)
         val intent = Intent(context, WelcomeScreen::class.java)
         context.startActivity(intent)
     }

@@ -63,7 +63,6 @@ import com.example.myjourney.R
 import com.example.myjourney.SearchScreen
 import com.example.myjourney.data.Places
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
-import kotlin.math.log
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
@@ -434,11 +433,11 @@ fun addPlaces(): MutableList<Places> {
             "Hazrati Imom majmuasi 16303Toshkentning diniy yodgorliklaridan biri bu aholi orasida Xast-Imom nomi bilan mashhur Hazrati Imom ansamblidir. Maydon eski shaharning orqasida joylashgan bo‘lib, u 1966 yildagi kuchli zilziladan omon qolgan." +
                     "\n Majmua olim va din arbobi, birinchi toshkentlik imom Kaffol ash Shoshiy dafn etilgan joyda qurilgan.",
             "Ziyorat",
-            intArrayOf(
-                R.drawable.hazrati_imom,
-                R.drawable.hazrati_imom2,
-                R.drawable.hazrati_imom3,
-                R.drawable.hazrati_imom4
+            arrayOf(
+                "https://meros.uz/upload/2017/02/9da5ba327cc8ee44e63f6d63bd112aa3-large.jpg",
+                "https://storage.kun.uz/source/1/xL4YxoXhSxhu5hIQDkqDa6H5k5mNvrLu.jpg",
+                "https://upload.wikimedia.org/wikipedia/commons/3/34/Barakhan_Madrasah_Tashkent.jpg",
+                "https://img1.advisor.travel/1314x680px-Hazrati_Imom_majmuasi_5.jpg"
             )
         )
     )
@@ -449,11 +448,11 @@ fun addPlaces(): MutableList<Places> {
             "Musulmon olamining taniqli muhaddislaridan biri Imom al-Buxoriy 810 yil 21-iyulda Buxoroda tavallud topgan, 870 yilda Samarqanddan 25 km uzoqda joylashgan Xartang qishlog'ida (Samarqand viloyatining hozirgi Chelak tumani) vafot etgan va o sha yerda dafn etilgan.\n" +
                     " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi.",
             "Ziyorat",
-            intArrayOf(
-                R.drawable.al_buxoriy,
-                R.drawable.al_buxoriy2,
-                R.drawable.al_buxoriy3,
-                R.drawable.al_buxoriy4
+            arrayOf(
+                "https://mirumarasadov.files.wordpress.com/2014/10/0_1853f_af66a20c_l.jpg",
+                "https://ilmlar.uz/wp-content/uploads/2022/12/Samarqanddagi-Imom-Al-Buxoriy.jpg",
+                "https://telegra.ph/file/b24129272d4c564e811e3.jpg",
+                "https://oyina.uz/storage/generations/September2023/6k20K4oLj8PvlxV5aIpU.jpg"
             )
         )
     )
@@ -464,11 +463,11 @@ fun addPlaces(): MutableList<Places> {
             "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
                     "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan.",
             "Madaniy",
-            intArrayOf(
-                R.drawable.oq_saroy,
-                R.drawable.oq_saroy2,
-                R.drawable.oq_saroy3,
-                R.drawable.oq_saroy4
+            arrayOf(
+                "https://www.gazeta.uz/media/img/2016/03/ENrM7H14592159353382_l.jpg",
+                "https://repost.uz/storage/uploads/0-1696926435-Oleg-post-material.jpeg",
+                "https://ru.travelornament.com/thumb/2/VJt0undFyeACW10N-pcoJA/580r450/d/0__7f2eb__d28d1ec__XXL.jpg",
+                "https://fastly.4sqi.net/img/general/600x600/1155361_yJhQSiEmUiwEWkxqSO5Szovhb250OkUVnhmB93svcGE.jpg"
             )
         )
     )
@@ -479,11 +478,11 @@ fun addPlaces(): MutableList<Places> {
             "Ichan Qal’a 4735O‘tmishga tashrif buyurishni xohlaysizmi? Eski ko‘chalarni aylanib o‘tib, haqiqiy tarixiy shaharni ko‘rishni istaysizmi? Bu orzuni haqiqatga aylantirish mumkin, siz ko‘zingiz bilan haqiqiy sharq ertagini ko‘rish  uchun\n" +
                     " Xivaga – ko‘plab madrasalar, masjidlar, minoralar,  hunarmandchilik ustaxonalari va mehmonxonalari bilan  ochiq-osmon ostidagi  O‘zbekistonning javohiri bo‘lgan Ichan-Qal’a shahriga kelishingiz kerak.",
             "Madaniy",
-            intArrayOf(
-                R.drawable.ichan_qala,
-                R.drawable.ichan_qala,
-                R.drawable.ichan_qala,
-                R.drawable.ichan_qala
+            arrayOf(
+                "https://uzbek-travel.com/images/uz/Landmarks/Khiva/Ichan_Kala/3669198198_67b80fb777_b.jpg",
+                "https://static.xabar.uz/crop/4/2/720_460_95_4238165090.jpg",
+                "https://as2.ftcdn.net/v2/jpg/04/74/47/39/1000_F_474473960_Edi94tfr6DSqZ3ouVJCwyJgTnHKjjaOH.jpg",
+                "https://uzbek-travel.com/images/uz/Landmarks/Khiva/Ichan_Kala/3633066605_8133f38f4a_b.jpg"
             )
         )
     )
@@ -494,11 +493,11 @@ fun addPlaces(): MutableList<Places> {
             "Bildirsoy tog‘-chang‘i kurortidagi qor qoplamasi yevropadagi qordan farq qiladi. Kontinental iqlim, bir tomondan Himolay tog‘lari , ikkinchi tomondan Sibir haddan tashqari haroratni va kuchli qor yog‘ishini taʼminlaydi." +
                     "\nBu yerdagi qor eng zo‘r, quruq va sovuq, chang‘i uchish uchun juda yaxshi hamda mutaxassislarning fikriga ko‘ra dunyodagi eng ajoyib qorlardan biri hisoblanadi.",
             "Tabiat",
-            intArrayOf(
-                R.drawable.katta_chimyon,
-                R.drawable.katta_chimyon,
-                R.drawable.katta_chimyon,
-                R.drawable.katta_chimyon
+            arrayOf(
+                "https://daryo.uz/cache/2016/02/57b36d7e736525199bc4e8b45d4c65d8_L-650x433.jpg",
+                "https://storage.kun.uz/source/5/nH62snH70K_HLk4oVhFsxcW0gGjOMnkO.jpg",
+                "https://www.amirsoy.com/img/services/snowshoeing.jpg",
+                "https://www.gazeta.uz/media/img/2021/12/lDohMO16406884622641_l.jpg"
             )
         )
     )

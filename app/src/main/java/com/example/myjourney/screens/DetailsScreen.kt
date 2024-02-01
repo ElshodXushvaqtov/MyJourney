@@ -7,22 +7,19 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialogDefaults.containerColor
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -37,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -48,7 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 
@@ -67,7 +63,7 @@ class DetailsScreen : ComponentActivity() {
                     val placeImg = intent.getIntExtra("placeImg", 0)
                     val placeName = intent.getStringExtra("placeName")
                     val placeDescription = intent.getStringExtra("placeDescription")
-                    val images = intent.getIntArrayExtra("moreImages")
+                    val images = intent.getStringArrayExtra("moreImages")
                     if (placeName != null && placeDescription != null && images != null) {
                         DetailScreen(placeImg, placeName, placeDescription, images)
                     }
@@ -79,7 +75,7 @@ class DetailsScreen : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen(img: Int, name: String, description: String, images: IntArray) {
+fun DetailScreen(img: Int, name: String, description: String, images: Array<String>?) {
     Scaffold { innerPadding ->
         DetailScreenContent(
             modifier = Modifier.padding(innerPadding),
@@ -97,7 +93,7 @@ private fun DetailScreenContent(
     pImg: Int,
     pName: String,
     pDescription: String,
-    moreImages: IntArray
+    moreImages: Array<String>?
 ) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
@@ -105,9 +101,10 @@ private fun DetailScreenContent(
     )
     Column(
         modifier = Modifier
-            .padding(start = 15.dp, end = 15.dp, top = 20.dp)
-            .fillMaxHeight()
-            .semantics { contentDescription = "Detail Screen" },
+            .padding(start = 10.dp, end = 10.dp, top = 15.dp)
+            .fillMaxSize()
+            .semantics { contentDescription = "Detail Screen" }
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -118,6 +115,8 @@ private fun DetailScreenContent(
                 .clip(
                     RoundedCornerShape(10.dp)
                 )
+                .size(width = 400.dp, height = 350.dp),
+            contentScale = ContentScale.FillBounds
 
         )
         Spacer(modifier = Modifier.size(16.dp))
@@ -217,7 +216,7 @@ private fun DetailScreenContent(
 }
 
 @Composable
-private fun MoreImages(more: IntArray) {
+private fun MoreImages(more: Array<String>?) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
@@ -238,86 +237,69 @@ private fun MoreImages(more: IntArray) {
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(
-            Modifier.fillMaxWidth(),
-            Arrangement.SpaceBetween
+            Modifier
+                .fillMaxWidth(),
+            Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
+
+
             Card(
                 modifier = Modifier.size(width = 85.dp, height = 80.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White,
-                )
+                ),
+                shape = RoundedCornerShape(20)
             ) {
-
-                Image(
-                    painter = painterResource(id = more[0]),
+                AsyncImage(
+                    model = more?.get(0),
                     contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clip(shape = RoundedCornerShape(10))
-                )
-            }
-            Card(
-                modifier = Modifier.size(width = 95.dp, height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White,
-                )
-            ) {
-
-                Image(
-                    painter = painterResource(id = more[1]),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clip(shape = RoundedCornerShape(10))
+                    contentScale = ContentScale.FillBounds
                 )
             }
             Card(
                 modifier = Modifier.size(width = 85.dp, height = 80.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White,
-                )
+                ),
+                shape = RoundedCornerShape(20)
             ) {
-
-                Image(
-                    painter = painterResource(id = more[2]),
+                AsyncImage(
+                    model = more?.get(1),
                     contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clip(shape = RoundedCornerShape(10))
+                    contentScale = ContentScale.FillBounds
+                )
+            }
+
+            Card(
+                modifier = Modifier.size(width = 85.dp, height = 80.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                ),
+                shape = RoundedCornerShape(20)
+            ) {
+                AsyncImage(
+                    model = more?.get(2),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillBounds
                 )
             }
             Card(
-                modifier = Modifier.size(width = 80.dp, height = 65.dp),
+                modifier = Modifier.size(width = 85.dp, height = 80.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = Color.White,
-                )
+                ),
+                shape = RoundedCornerShape(20)
             ) {
 
-                Image(
-                    painter = painterResource(id = more[3]),
+                AsyncImage(
+                    model = more?.get(3),
                     contentDescription = null,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .clip(shape = RoundedCornerShape(10)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.FillBounds
                 )
             }
         }
     }
-}
-
-@Composable
-fun MoreItem(images: IntArray) {
-    Row {
-
-    }
-    Image(
-        painter = painterResource(id = images[1]),
-        contentDescription = null,
-        modifier = Modifier
-            .size(70.dp)
-            .clip(shape = RoundedCornerShape(50))
-    )
 }
 
 @Preview(showBackground = true)

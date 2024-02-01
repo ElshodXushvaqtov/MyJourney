@@ -1,6 +1,12 @@
 package com.example.myjourney.data
 
-data class Places(var name: String, var img: Int, var description: String, var category:String, var moreImages:IntArray) {
+data class Places(
+    var name: String,
+    var img: Int,
+    var description: String,
+    var category: String,
+    var moreImages: Array<String>
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
