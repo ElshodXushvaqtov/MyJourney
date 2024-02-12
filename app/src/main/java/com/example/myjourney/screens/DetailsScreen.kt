@@ -1,7 +1,5 @@
 package com.example.myjourney.screens
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -47,9 +44,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myjourney.R
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
-
-@SuppressLint("StaticFieldLeak")
-private lateinit var context: Context
 
 class DetailsScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

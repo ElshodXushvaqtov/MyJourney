@@ -59,6 +59,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.example.myjourney.ProfileScreen
 import com.example.myjourney.R
 import com.example.myjourney.SearchScreen
 import com.example.myjourney.data.Places
@@ -217,10 +219,22 @@ private fun Categories() {
         )
         Spacer(modifier = Modifier.size(16.dp))
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-            Category(paint = R.drawable.cat_1, text = "Madaniy")
-            Category(paint = R.drawable.cat_2, text = "Adabiy")
-            Category(paint = R.drawable.cat_3, text = "Ziyorat")
-            Category(paint = R.drawable.cat_4, text = "Tabiat")
+            Category(
+                R.drawable.madaniy_c,
+                text = "Madaniy"
+            )
+            Category(
+                paint = R.drawable.badiiy_c,
+                text = "Badiiy"
+            )
+            Category(
+                paint = R.drawable.ziyorat_c,
+                text = "Ziyorat"
+            )
+            Category(
+                paint = R.drawable.tabiat_c,
+                text = "Tabiat"
+            )
         }
     }
 }
@@ -238,13 +252,9 @@ fun Category(@DrawableRes paint: Int, text: String) {
     ) {
         IconButton(
             onClick = {},
-            modifier = Modifier.size(65.dp)
+            modifier = Modifier.size(width = 80.dp, height = 65.dp)
         ) {
-            Image(
-                painter = painterResource(id = paint),
-                contentDescription = null,
-                modifier = Modifier.size(65.dp)
-            )
+            Image(painter = painterResource(id = paint), contentDescription = null)
         }
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -274,16 +284,18 @@ private fun NavBar() {
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Spacer(modifier = Modifier.size(15.dp))
-            IconButton(onClick = {}, content = {
-                Image(
-                    painter = painterResource(id = R.drawable.home),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .width(30.dp)
-                        .height(30.dp)
-                )
-            },
+            IconButton(
+                onClick = { context.startActivity(Intent(context, HomeScreen::class.java)) },
+                content = {
+                    Image(
+                        painter = painterResource(id = R.drawable.home),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .width(30.dp)
+                            .height(30.dp)
+                    )
+                },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .width(40.dp)
@@ -291,7 +303,7 @@ private fun NavBar() {
             )
             Spacer(modifier = Modifier.size(12.dp))
             IconButton(
-                onClick = { context.startActivity(Intent(context, DetailsScreen::class.java)) },
+                onClick = {},
                 content = {
                     Icon(
                         painter = painterResource(id = R.drawable.ticket),
@@ -325,16 +337,25 @@ private fun NavBar() {
             )
 
             Spacer(modifier = Modifier.size(12.dp))
-            IconButton(onClick = {}, content = {
-                Icon(
-                    painter = painterResource(id = R.drawable.profile),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .width(30.dp)
-                        .height(30.dp)
-                )
-            },
+            IconButton(
+                onClick = {
+                    context.startActivity(
+                        Intent(
+                            context,
+                            ProfileScreen::class.java
+                        )
+                    )
+                },
+                content = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.profile),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .width(30.dp)
+                            .height(30.dp)
+                    )
+                },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .width(40.dp)

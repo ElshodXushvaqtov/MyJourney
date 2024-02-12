@@ -7,4 +7,5 @@
     <string name="title_activity_main_screen">MainScreen</string>
     <string name="title_activity_details_screen">DetailsScreen</string>
     <string name="title_activity_search_screen">SearchScreen</string>
+    <string name="title_activity_profile_screen">ProfileScreen</string>
 </resources>
