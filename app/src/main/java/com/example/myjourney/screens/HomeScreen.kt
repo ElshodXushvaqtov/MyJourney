@@ -59,10 +59,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.example.myjourney.ProfileScreen
 import com.example.myjourney.R
-import com.example.myjourney.SearchScreen
 import com.example.myjourney.data.Places
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 

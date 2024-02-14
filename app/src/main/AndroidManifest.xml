@@ -13,12 +13,17 @@
         android:theme="@style/Theme.MyJourney"
         tools:targetApi="31">
         <activity
-            android:name=".ProfileScreen"
+            android:name=".screens.PaymentScreen"
+            android:exported="false"
+            android:label="@string/title_activity_payment_screen"
+            android:theme="@style/Theme.MyJourney" />
+        <activity
+            android:name=".screens.ProfileScreen"
             android:exported="false"
             android:label="@string/title_activity_profile_screen"
             android:theme="@style/Theme.MyJourney" />
         <activity
-            android:name=".SearchScreen"
+            android:name=".screens.SearchScreen"
             android:exported="false"
             android:label="@string/title_activity_search_screen"
             android:theme="@style/Theme.MyJourney" />

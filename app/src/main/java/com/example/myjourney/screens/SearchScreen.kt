@@ -1,4 +1,4 @@
-package com.example.myjourney
+package com.example.myjourney.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myjourney.ui.theme.MyJourneyTheme
 
-class ProfileScreen : ComponentActivity() {
+class SearchScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +22,7 @@ class ProfileScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting3("Android")
+                    Greeting2("Android")
                 }
             }
         }
@@ -30,7 +30,7 @@ class ProfileScreen : ComponentActivity() {
 }
 
 @Composable
-fun Greeting3(name: String, modifier: Modifier = Modifier) {
+fun Greeting2(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
@@ -39,8 +39,8 @@ fun Greeting3(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview3() {
+fun GreetingPreview2() {
     MyJourneyTheme {
-        Greeting3("Android")
+        Greeting2("Android")
     }
 }
