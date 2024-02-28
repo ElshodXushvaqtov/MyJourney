@@ -110,7 +110,6 @@ fun Search() {
                 }
             }
         ) {
-LazyColumn(content = )
             history.forEach {
                 Row(modifier = Modifier.padding(all = 10.dp)) {
                     if (it != "") {
@@ -141,6 +140,7 @@ object Places {
         places.filter {
             it.startsWith(text)
         }
+        return places
     }
 }
 
