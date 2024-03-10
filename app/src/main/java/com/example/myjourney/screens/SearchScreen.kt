@@ -53,43 +53,43 @@ class SearchScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 //                    val places: ArrayList<Places> = intent.getParcelableArrayListExtra("places")!!
-//                    val list = listOf(
-//                        "Java",
-//                        "Kotlin",
-//                        "Python",
-//                        "Swift",
-//                        "Java-script",
-//                        "C",
-//                        "C++",
-//                        "XML",
-//                        "Dart",
-//                        "Go",
-//                        "R",
-//                        "PHP",
-//                        "Ruby",
-//                        "Perl",
-//                        "SQL",
-//                        "Objective-C",
-//                        "HTML",
-//                        "CSS"
-//                    )
-                    val db = Firebase.firestore
-                    val ref = db.collection("All-Places")
-                    var places = remember {
-                        mutableStateListOf<Places>()
-                    }
-                    ref.get()
-                        .addOnSuccessListener {
-                            if (it.isEmpty) {
-                                Toast.makeText(this, "Places not found", Toast.LENGTH_SHORT).show()
-                                return@addOnSuccessListener
-                            }
-                            for (document in it) {
-                                val info = document.toObject(Places::class.java)
-                                places.add(info)
-                            }
-                        }
-                    MyApp(list = places)
+                    val list = listOf(
+                        "Java",
+                        "Kotlin",
+                        "Python",
+                        "Swift",
+                        "Java-script",
+                        "C",
+                        "C++",
+                        "XML",
+                        "Dart",
+                        "Go",
+                        "R",
+                        "PHP",
+                        "Ruby",
+                        "Perl",
+                        "SQL",
+                        "Objective-C",
+                        "HTML",
+                        "CSS"
+                    )
+//                    val db = Firebase.firestore
+//                    val ref = db.collection("All-Places")
+//                    var places = remember {
+//                        mutableStateListOf<Places>()
+//                    }
+//                    ref.get()
+//                        .addOnSuccessListener {
+//                            if (it.isEmpty) {
+//                                Toast.makeText(this, "Places not found", Toast.LENGTH_SHORT).show()
+//                                return@addOnSuccessListener
+//                            }
+//                            for (document in it) {
+//                                val info = document.toObject(Places::class.java)
+//                                places.add(info)
+//                            }
+//                        }
+                    MyApp(list = list)
                 }
             }
         }
@@ -97,7 +97,7 @@ class SearchScreen : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier, list: SnapshotStateList<Places>) {
+fun MyApp(modifier: Modifier = Modifier, list: List<String>) {
     Column(modifier.fillMaxSize()) {
 
         val textState = remember {
@@ -109,9 +109,9 @@ fun MyApp(modifier: Modifier = Modifier, list: SnapshotStateList<Places>) {
         list.toMutableList()
         LazyColumn(modifier = Modifier.padding(10.dp)) {
             items(items = list.filter {
-                it.name.contains(searchedText, ignoreCase = true)
-            }, key = { it }) {
-                ColumnItem(item = it.name)
+                it.contains(searchedText, ignoreCase = true)
+            }, key = { it }) { item ->
+                ColumnItem(item = item)
             }
         }
     }
