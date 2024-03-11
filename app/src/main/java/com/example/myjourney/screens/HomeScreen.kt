@@ -478,7 +478,7 @@ fun addPlaces(): MutableList<Places> {
         Places(
             "Oq Saroy",
             R.drawable.oq_saroy,
-            "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
+             "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
                     "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan.",
             "Madaniy",
             arrayOf(
