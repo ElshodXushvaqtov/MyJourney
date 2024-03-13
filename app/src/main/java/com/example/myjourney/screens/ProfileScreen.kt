@@ -1,6 +1,8 @@
 package com.example.myjourney.screens
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -36,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +48,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myjourney.R
 import com.example.myjourney.ui.theme.MyJourneyTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class ProfileScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +61,13 @@ class ProfileScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken("822578261694-vsbbdi0ppijrit24o60bie8vepn16j84.apps.googleusercontent.com")
+                        .requestEmail()
+                        .build()
+                    val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+                    val context = LocalContext.current
+                    val i = Intent(context, SignInScreen::class.java)
                     var checked by remember { mutableStateOf(true) }
                     var openDialog = remember { mutableStateOf(false) }
                     Column(
@@ -223,7 +235,19 @@ class ProfileScreen : ComponentActivity() {
                                 },
                                 onDismissRequest = { true },
                                 confirmButton = {
-                                    TextButton(onClick = { openDialog.value = false })
+                                    TextButton(onClick = {
+                                        openDialog.value = false
+                                        mGoogleSignInClient.signOut()
+
+                                        Toast.makeText(
+                                            context,
+                                            "Successfully signed out!",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+
+                                        context.startActivity(i)
+                                    })
                                     { Text(text = "Logout", color = Color.Black) }
                                 },
                                 dismissButton = {
