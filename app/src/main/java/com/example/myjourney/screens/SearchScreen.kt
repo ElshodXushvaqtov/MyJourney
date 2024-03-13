@@ -2,8 +2,8 @@ package com.example.myjourney.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -14,13 +14,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,7 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -62,7 +59,7 @@ class SearchScreen : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-
+                    MainSearch()
                 }
             }
         }
@@ -101,7 +98,7 @@ fun MainSearch() {
     Column(modifier = Modifier.padding(top = 90.dp))
     {
         val searchedPlaces = places.filter {
-            it.name.contains(searchText.value.text, ignoreCase = true) == true
+            it.name?.contains(searchText.value.text, ignoreCase = true) == true
         }
 
         LazyVerticalGrid(
@@ -109,21 +106,18 @@ fun MainSearch() {
             modifier = Modifier.padding(bottom = 100.dp, start = 10.dp, end = 10.dp)
         ) {
             items(items = searchedPlaces) { item ->
-                item.name.let { it1 ->
-                    item.description.let { it2 ->
-                        item.category.let { it3 ->
-                            item.img.let { it4 ->
-                                item.moreImages.let { it5 ->
-                                    Item(
-                                        name = it1,
-                                        img = it4,
-                                        description = it2,
-                                        category = it3,
-                                        moreImages = it5,
-                                        context = context
-                                    )
-                                }
-
+                item.name?.let { Log.d("BBB", it) }
+                item.name?.let {
+                    item.img?.let { it1 ->
+                        item.description?.let { it2 ->
+                            item.category?.let { it3 ->
+                                Item(
+                                    name = it,
+                                    img = it1,
+                                    description = it2,
+                                    category = it3,
+                                    context = LocalContext.current
+                                )
                             }
                         }
                     }

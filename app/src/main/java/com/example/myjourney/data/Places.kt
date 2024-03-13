@@ -1,11 +1,11 @@
 package com.example.myjourney.data
 
 data class Places(
-    var name: String,
-    var img: Int,
-    var description: String,
-    var category: String,
-    var moreImages: Array<String>
+    var name: String? = "",
+    var img: String? = "",
+    var description: String? = "",
+    var category: String? = "",
+    var moreImages: Array<String>? = arrayOf("")
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -17,15 +17,18 @@ data class Places(
         if (img != other.img) return false
         if (description != other.description) return false
         if (category != other.category) return false
-        return moreImages.contentEquals(other.moreImages)
+        if (!moreImages.contentEquals(other.moreImages)) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + img
+        result = 31 * result + img.hashCode()
         result = 31 * result + description.hashCode()
         result = 31 * result + category.hashCode()
         result = 31 * result + moreImages.contentHashCode()
         return result
     }
+
 }

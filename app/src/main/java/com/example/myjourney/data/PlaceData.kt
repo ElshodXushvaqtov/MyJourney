@@ -19,7 +19,9 @@ class PlaceData {
                     val places = mutableListOf<Places>()
                     snapshot.children.forEach {
                         val place = it.getValue(Places::class.java)
-                        Log.d("AAA", place.toString())
+                        if (place != null) {
+                            place.name?.let { it1 -> Log.d("AAA", it1) }
+                        }
                         if (place != null) {
                             places.add(place)
                         }
@@ -47,7 +49,7 @@ class PlaceData {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    callback(Places("", 0, "", "", arrayOf("")))
+                    callback(Places("", "", "", "", arrayOf("")))
                 }
             })
 

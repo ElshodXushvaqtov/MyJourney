@@ -59,6 +59,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.myjourney.R
 import com.example.myjourney.data.Places
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
@@ -424,21 +425,23 @@ fun RecommendationsItem(places: Places) {
                 context.startActivity(intent)
             }
         ) {
-            Image(
-                painter = painterResource(id = places.img),
+            AsyncImage(
+                model = places.img,
                 contentDescription = null,
                 modifier = Modifier.size(width = 250.dp, height = 250.dp),
                 contentScale = ContentScale.Crop
             )
         }
-        Text(
-            text = places.name, style = TextStyle(
-                fontFamily = gilroy,
-                fontWeight = FontWeight.W600,
-                fontSize = 16.sp,
-                color = Color(0xFF452933)
+        places.name?.let {
+            Text(
+                text = it, style = TextStyle(
+                    fontFamily = gilroy,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 16.sp,
+                    color = Color(0xFF452933)
+                )
             )
-        )
+        }
     }
 }
 
@@ -447,7 +450,7 @@ fun addPlaces(): MutableList<Places> {
     placeList.add(
         Places(
             "Hazrati Imom Majmuasi",
-            R.drawable.hazrati_imom,
+            "https://meros.uz/upload/2017/02/9da5ba327cc8ee44e63f6d63bd112aa3-large.jpg",
             "Hazrati Imom majmuasi 16303Toshkentning diniy yodgorliklaridan biri bu aholi orasida Xast-Imom nomi bilan mashhur Hazrati Imom ansamblidir. Maydon eski shaharning orqasida joylashgan bo‘lib, u 1966 yildagi kuchli zilziladan omon qolgan." +
                     "\n Majmua olim va din arbobi, birinchi toshkentlik imom Kaffol ash Shoshiy dafn etilgan joyda qurilgan.",
             "Ziyorat",
@@ -462,7 +465,7 @@ fun addPlaces(): MutableList<Places> {
     placeList.add(
         Places(
             "Imom Al-Buxoriy Maqbarasi",
-            R.drawable.al_buxoriy,
+            "https://mirumarasadov.files.wordpress.com/2014/10/0_1853f_af66a20c_l.jpg",
             "Musulmon olamining taniqli muhaddislaridan biri Imom al-Buxoriy 810 yil 21-iyulda Buxoroda tavallud topgan, 870 yilda Samarqanddan 25 km uzoqda joylashgan Xartang qishlog'ida (Samarqand viloyatining hozirgi Chelak tumani) vafot etgan va o sha yerda dafn etilgan.\n" +
                     " Biroq, bu joy asrlar davomida qarovsiz holatda qolgan edi.",
             "Ziyorat",
@@ -477,8 +480,8 @@ fun addPlaces(): MutableList<Places> {
     placeList.add(
         Places(
             "Oq Saroy",
-            R.drawable.oq_saroy,
-             "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
+            "https://www.gazeta.uz/media/img/2016/03/ENrM7H14592159353382_l.jpg",
+            "Oq saroy, Shahrisabzning asosiy diqqatga sazovor joyi va marvarididir." +
                     "\nOy nurida saroy fasadi va gumbazlari ranglari o'zgarib turishi sababli, Oqsaroy o‘zining shunday afsonaviy nomini olgan.",
             "Madaniy",
             arrayOf(
@@ -492,7 +495,7 @@ fun addPlaces(): MutableList<Places> {
     placeList.add(
         Places(
             "Ichan Qal'a",
-            R.drawable.ichan_qala,
+            "https://uzbek-travel.com/images/uz/Landmarks/Khiva/Ichan_Kala/3669198198_67b80fb777_b.jpg",
             "Ichan Qal’a 4735O‘tmishga tashrif buyurishni xohlaysizmi? Eski ko‘chalarni aylanib o‘tib, haqiqiy tarixiy shaharni ko‘rishni istaysizmi? Bu orzuni haqiqatga aylantirish mumkin, siz ko‘zingiz bilan haqiqiy sharq ertagini ko‘rish  uchun\n" +
                     " Xivaga – ko‘plab madrasalar, masjidlar, minoralar,  hunarmandchilik ustaxonalari va mehmonxonalari bilan  ochiq-osmon ostidagi  O‘zbekistonning javohiri bo‘lgan Ichan-Qal’a shahriga kelishingiz kerak.",
             "Madaniy",
@@ -507,7 +510,7 @@ fun addPlaces(): MutableList<Places> {
     placeList.add(
         Places(
             "Bildirsoy tog‘-chang‘i kurorti",
-            R.drawable.katta_chimyon,
+            "https://daryo.uz/cache/2016/02/57b36d7e736525199bc4e8b45d4c65d8_L-650x433.jpg",
             "Bildirsoy tog‘-chang‘i kurortidagi qor qoplamasi yevropadagi qordan farq qiladi. Kontinental iqlim, bir tomondan Himolay tog‘lari , ikkinchi tomondan Sibir haddan tashqari haroratni va kuchli qor yog‘ishini taʼminlaydi." +
                     "\nBu yerdagi qor eng zo‘r, quruq va sovuq, chang‘i uchish uchun juda yaxshi hamda mutaxassislarning fikriga ko‘ra dunyodagi eng ajoyib qorlardan biri hisoblanadi.",
             "Tabiat",
