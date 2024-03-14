@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -55,6 +56,7 @@ private lateinit var auth: FirebaseAuth
 private var mAuth = FirebaseAuth.getInstance()
 
 class SignInScreen : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -95,14 +97,15 @@ class SignInScreen : ComponentActivity() {
                                 .width(220.dp)
                                 .border(1.dp, Color.Black, RoundedCornerShape(30.dp))
                                 .padding(5.dp),
+                            onClick = {
+                                val signInIntent = mGoogleSignInClient.signInIntent
+                                startActivityForResult(signInIntent, 1)
+                            }
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                IconButton(onClick = {
-                                    val signInIntent = mGoogleSignInClient.signInIntent
-                                    startActivityForResult(signInIntent, 1)
-                                }) {
+                                IconButton(onClick = {}) {
                                     Image(
                                         painterResource(id = R.drawable.google),
                                         contentDescription = null

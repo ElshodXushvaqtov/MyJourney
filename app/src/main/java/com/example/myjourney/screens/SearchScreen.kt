@@ -95,7 +95,9 @@ fun MainSearch() {
 
     }
 
-    Column(modifier = Modifier.padding(top = 90.dp))
+    Column(modifier = Modifier
+        .padding(top = 90.dp)
+        .fillMaxSize())
     {
         val searchedPlaces = places.filter {
             it.name?.contains(searchText.value.text, ignoreCase = true) == true
@@ -111,6 +113,7 @@ fun MainSearch() {
                     item.img?.let { it1 ->
                         item.description?.let { it2 ->
                             item.category?.let { it3 ->
+                                Log.d("itemName", it)
                                 Item(
                                     name = it,
                                     img = it1,
