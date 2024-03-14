@@ -54,11 +54,11 @@ class DetailsScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val placeImg = intent.getIntExtra("placeImg", 0)
+                    val placeImg = intent.getStringExtra("placeImg")
                     val placeName = intent.getStringExtra("placeName")
                     val placeDescription = intent.getStringExtra("placeDescription")
                     val images = intent.getStringArrayExtra("moreImages")
-                    if (placeName != null && placeDescription != null && images != null) {
+                    if (placeImg != null && placeName != null && placeDescription != null && images != null) {
                         DetailScreen(placeImg, placeName, placeDescription, images)
                     }
                     Log.d("AAA", "$placeName" + "\n$placeDescription")
@@ -69,7 +69,7 @@ class DetailsScreen : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen(img: Int, name: String, description: String, images: Array<String>?) {
+fun DetailScreen(img: String, name: String, description: String, images: Array<String>?) {
     Scaffold { innerPadding ->
         DetailScreenContent(
             modifier = Modifier.padding(innerPadding),
@@ -84,7 +84,7 @@ fun DetailScreen(img: Int, name: String, description: String, images: Array<Stri
 @Composable
 private fun DetailScreenContent(
     modifier: Modifier,
-    pImg: Int,
+    pImg: String,
     pName: String,
     pDescription: String,
     moreImages: Array<String>?
@@ -102,8 +102,8 @@ private fun DetailScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(id = pImg),
+        AsyncImage(
+            model = pImg,
             contentDescription = null,
             modifier = Modifier
                 .clip(

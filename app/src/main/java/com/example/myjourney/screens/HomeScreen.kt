@@ -3,6 +3,7 @@ package com.example.myjourney.screens
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -63,11 +64,12 @@ import coil.compose.AsyncImage
 import com.example.myjourney.R
 import com.example.myjourney.data.Places
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("StaticFieldLeak")
 private lateinit var context: Context
 private lateinit var intent: Intent
-
+private lateinit var auth: FirebaseAuth
 class HomeScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,8 +101,11 @@ fun Home() {
 private fun HomeScreenContent(
     modifier: Modifier
 ) {
+    auth = FirebaseAuth.getInstance()
     context = LocalContext.current
-
+    val profileName = auth.currentUser?.displayName
+    val profileImg = auth.currentUser?.photoUrl
+    Log.d("uName", profileName.toString())
     Column(
         modifier = modifier
             .padding(18.dp)
@@ -109,7 +114,9 @@ private fun HomeScreenContent(
             .semantics { contentDescription = "Home Screen" }
     ) {
         Spacer(modifier = Modifier.size(5.dp))
-        ToolbarHome()
+        if (profileName != null && profileImg !=null) {
+            ToolbarHome(profileName,profileImg)
+        }
         Header()
         Categories()
         Spacer(modifier = Modifier.height(15.dp))
@@ -118,14 +125,14 @@ private fun HomeScreenContent(
 }
 
 @Composable
-private fun ToolbarHome() {
+private fun ToolbarHome(uName: String, uImg: Uri?) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
     )
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(id = R.drawable.home_profile),
+        AsyncImage(
+            model = uImg,
             contentDescription = null
         )
         Spacer(modifier = Modifier.size(16.dp))
@@ -139,7 +146,7 @@ private fun ToolbarHome() {
                 )
             )
             Text(
-                text = "Elshodbek Xushvaqtov", style = TextStyle(
+                text = uName, style = TextStyle(
                     fontFamily = gilroy,
                     fontWeight = FontWeight.W600,
                     fontSize = 24.sp,
@@ -432,6 +439,7 @@ fun RecommendationsItem(places: Places) {
                 contentScale = ContentScale.Crop
             )
         }
+        Spacer(modifier = Modifier.height(10.dp))
         places.name?.let {
             Text(
                 text = it, style = TextStyle(

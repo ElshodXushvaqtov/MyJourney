@@ -174,10 +174,11 @@ class SignInScreen : ComponentActivity() {
                     })
 
                     val i = Intent(this, HomeScreen::class.java)
-                    i.putExtra("uid", userData.uid)
-                    i.putExtra("userEmail", userData.email)
-                    i.putExtra("userName", userData.name)
-                    i.putExtra("userPhoto", userData.photo)
+                    i.putExtra("uid", userData.uid.toString())
+                    i.putExtra("userEmail", userData.email.toString())
+                    i.putExtra("userName", userData.name.toString())
+                    i.putExtra("userPhoto", userData.photo.toString())
+                    Log.d("uDataName", userData.name.toString())
                     startActivity(i)
 
 
