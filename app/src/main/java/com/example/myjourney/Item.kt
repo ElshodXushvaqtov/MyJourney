@@ -2,6 +2,7 @@ package com.example.myjourney
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.myjourney.screens.DetailsScreen
+import kotlin.math.log
 
 @Composable
 fun Item(
@@ -73,7 +75,7 @@ fun Item(
                 contentScale = ContentScale.Crop,
 
                 )
-            Spacer(modifier = Modifier.height(20.dp))
+            Log.d("iName", name)
             Text(text = name)
         }
     }
