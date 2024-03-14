@@ -70,6 +70,7 @@ import com.google.firebase.auth.FirebaseAuth
 private lateinit var context: Context
 private lateinit var intent: Intent
 private lateinit var auth: FirebaseAuth
+
 class HomeScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,8 +115,8 @@ private fun HomeScreenContent(
             .semantics { contentDescription = "Home Screen" }
     ) {
         Spacer(modifier = Modifier.size(5.dp))
-        if (profileName != null && profileImg !=null) {
-            ToolbarHome(profileName,profileImg)
+        if (profileName != null && profileImg != null) {
+            ToolbarHome(profileName, profileImg)
         }
         Header()
         Categories()
