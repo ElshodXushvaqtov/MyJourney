@@ -278,6 +278,10 @@ fun Category(@DrawableRes paint: Int, text: String) {
 @Composable
 private fun NavBar() {
     context = LocalContext.current
+    auth = FirebaseAuth.getInstance()
+    val intent = Intent(context, ProfileScreen::class.java)
+    val profileName = auth.currentUser?.displayName
+    val profileImg = auth.currentUser?.photoUrl
     Modifier
         .padding(end = 20.dp)
         .fillMaxWidth()
@@ -346,11 +350,11 @@ private fun NavBar() {
             IconButton(
                 onClick = {
                     context.startActivity(
-                        Intent(
-                            context,
-                            ProfileScreen::class.java
-                        )
+                        intent
                     )
+                    Log.d("HomeProfile", profileName.toString()+"\n"+profileImg.toString())
+                    intent.putExtra("profileImg", profileImg.toString())
+                    intent.putExtra("profileName", profileName.toString())
                 },
                 content = {
                     Icon(

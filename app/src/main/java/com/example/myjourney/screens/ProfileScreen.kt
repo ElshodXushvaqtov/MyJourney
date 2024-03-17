@@ -2,6 +2,7 @@ package com.example.myjourney.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -51,6 +52,7 @@ import com.example.myjourney.ui.theme.MyJourneyTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
+@Suppress("UNUSED_EXPRESSION")
 class ProfileScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,10 @@ class ProfileScreen : ComponentActivity() {
                     val context = LocalContext.current
                     val i = Intent(context, SignInScreen::class.java)
                     var checked by remember { mutableStateOf(true) }
-                    var openDialog = remember { mutableStateOf(false) }
+                    val openDialog = remember { mutableStateOf(false) }
+                    val profileImg = intent.getStringExtra("profileImg")
+                    val profileName = intent.getStringExtra("profileName")
+                    Log.d("NameP", profileName.toString()+"\n"+profileImg.toString())
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -90,13 +95,13 @@ class ProfileScreen : ComponentActivity() {
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp),
-                                model = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
+                                model = profileImg.toString(),
                                 contentDescription = null
                             )
                             Column {
                                 Text(
                                     modifier = Modifier.padding(15.dp),
-                                    text = "Hello, Nigga",
+                                    text = "Hello, ${profileName.toString()}",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 25.sp
                                 )
