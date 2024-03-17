@@ -3,6 +3,7 @@ package com.example.myjourney.screens
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -54,7 +55,8 @@ import com.google.firebase.ktx.Firebase
 private lateinit var context: Context
 private lateinit var auth: FirebaseAuth
 private var mAuth = FirebaseAuth.getInstance()
-
+private lateinit var sharedPreferences: SharedPreferences
+private lateinit var editor: SharedPreferences.Editor
 class SignInScreen : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,8 +153,17 @@ class SignInScreen : ComponentActivity() {
                         user?.email,
                         user?.photoUrl.toString()
                     )
+                    sharedPreferences =
+                        context.getSharedPreferences("myShared", Context.MODE_PRIVATE)
+
+                    editor = sharedPreferences.edit()
+                    editor.putBoolean("isLogged", true)
+                    editor.putString("userID", userData.uid)
+                    editor.putString("uPhoto", userData.photo)
+                    editor.putString("uName", userData.name)
                     Toast.makeText(context, "Successfully signed in!", Toast.LENGTH_SHORT)
                         .show()
+                    editor.apply()
                     val reference = Firebase.database.reference.child("users")
                     var b = true
                     reference.addValueEventListener(object : ValueEventListener {

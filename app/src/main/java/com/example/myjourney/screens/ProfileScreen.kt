@@ -1,6 +1,8 @@
 package com.example.myjourney.screens
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -51,6 +53,10 @@ import com.example.myjourney.R
 import com.example.myjourney.ui.theme.MyJourneyTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+
+private lateinit var sharedPreferences: SharedPreferences
+private lateinit var editor: SharedPreferences.Editor
 
 @Suppress("UNUSED_EXPRESSION")
 class ProfileScreen : ComponentActivity() {
@@ -72,9 +78,11 @@ class ProfileScreen : ComponentActivity() {
                     val i = Intent(context, SignInScreen::class.java)
                     var checked by remember { mutableStateOf(true) }
                     val openDialog = remember { mutableStateOf(false) }
-                    val profileImg = intent.getStringExtra("profileImg")
-                    val profileName = intent.getStringExtra("profileName")
-                    Log.d("NameP", profileName.toString()+"\n"+profileImg.toString())
+                    val auth = FirebaseAuth.getInstance()
+                    sharedPreferences =
+                        context.getSharedPreferences("myShared", Context.MODE_PRIVATE)
+
+                    editor = sharedPreferences.edit()
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -95,13 +103,13 @@ class ProfileScreen : ComponentActivity() {
                                 modifier = Modifier
                                     .clip(CircleShape)
                                     .size(90.dp),
-                                model = profileImg.toString(),
+                                model = auth.currentUser?.photoUrl.toString(),
                                 contentDescription = null
                             )
                             Column {
                                 Text(
                                     modifier = Modifier.padding(15.dp),
-                                    text = "Hello, ${profileName.toString()}",
+                                    text = "Hello, ${auth.currentUser?.displayName}",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 25.sp
                                 )
@@ -242,8 +250,9 @@ class ProfileScreen : ComponentActivity() {
                                 confirmButton = {
                                     TextButton(onClick = {
                                         openDialog.value = false
+                                        editor.putBoolean("isLogged", false)
+                                        editor.apply()
                                         mGoogleSignInClient.signOut()
-
                                         Toast.makeText(
                                             context,
                                             "Successfully signed out!",

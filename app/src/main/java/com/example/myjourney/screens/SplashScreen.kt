@@ -58,7 +58,12 @@ fun Splash() {
     val isPlaying by remember {
         mutableStateOf(true)
     }
+    val sharedPreference = context.getSharedPreferences("myShared", Context.MODE_PRIVATE)
+    val isLogged =
+        context.getSharedPreferences("myShared", Context.MODE_PRIVATE).getBoolean("isLogged", false)
     val progress by animateLottieCompositionAsState(composition = lottieComp, isPlaying = isPlaying)
+    val iM = Intent(context, HomeScreen::class.java)
+    val iS = Intent(context, SignInScreen::class.java)
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -72,8 +77,14 @@ fun Splash() {
     }
     LaunchedEffect(key1 = progress) {
         delay(3500)
-        val intent = Intent(context, WelcomeScreen::class.java)
-        context.startActivity(intent)
+        if (isLogged) {
+            iM.putExtra("uid", sharedPreference.getString("userID", ""))
+            iM.putExtra("userPhoto", sharedPreference.getString("uPhoto", ""))
+            iM.putExtra("userName", sharedPreference.getString("uName", ""))
+            context.startActivity(iM)
+        } else {
+            context.startActivity(iS)
+        }
     }
 
 
