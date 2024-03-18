@@ -49,10 +49,46 @@ class PlaceData {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    callback(Places("", "", "", "", arrayOf("")))
+                    callback(Places("", "", "", ""))
                 }
             })
 
+        }
+
+        fun SavedPlaces(list: List<String>, callback: (List<Places>) -> Unit) {
+            places.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val saved = mutableListOf<Places>()
+                    dataSnapshot.children.forEach {
+                        val car = it.getValue(Places::class.java)
+                        if (car != null && car.name in list) {
+                            saved.add(car)
+                        }
+                    }
+                    callback(saved)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    callback(emptyList())
+                }
+            })
+        }
+        fun FavouritesFilter(lst: List<String>, callback: (List<Places>) -> Unit) {
+            places.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val fltr = mutableListOf<Places>()
+                    dataSnapshot.children.forEach {
+                        val car = it.getValue(Places::class.java)
+                        if (car != null && car.name in lst) {
+                            fltr.add(car)
+                        }
+                    }
+                    callback(fltr)
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    callback(emptyList())
+                }
+            })
         }
 
     }

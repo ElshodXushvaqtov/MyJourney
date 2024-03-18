@@ -19,8 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -57,9 +55,8 @@ class DetailsScreen : ComponentActivity() {
                     val placeImg = intent.getStringExtra("placeImg")
                     val placeName = intent.getStringExtra("placeName")
                     val placeDescription = intent.getStringExtra("placeDescription")
-                    val images = intent.getStringArrayExtra("moreImages")
-                    if (placeImg != null && placeName != null && placeDescription != null && images != null) {
-                        DetailScreen(placeImg, placeName, placeDescription, images)
+                    if (placeImg != null && placeName != null && placeDescription != null) {
+                        DetailScreen(placeImg, placeName, placeDescription)
                     }
                     Log.d("AAA", "$placeName" + "\n$placeDescription")
                 }
@@ -69,14 +66,13 @@ class DetailsScreen : ComponentActivity() {
 }
 
 @Composable
-fun DetailScreen(img: String, name: String, description: String, images: Array<String>?) {
+fun DetailScreen(img: String, name: String, description: String) {
     Scaffold { innerPadding ->
         DetailScreenContent(
             modifier = Modifier.padding(innerPadding),
             img,
             name,
-            description,
-            images
+            description
         )
     }
 }
@@ -86,8 +82,7 @@ private fun DetailScreenContent(
     modifier: Modifier,
     pImg: String,
     pName: String,
-    pDescription: String,
-    moreImages: Array<String>?
+    pDescription: String
 ) {
     val gilroy = FontFamily(
         Font(R.font.gilroy, FontWeight.Normal),
@@ -154,8 +149,6 @@ private fun DetailScreenContent(
             ),
             modifier = Modifier.padding(horizontal = 12.dp)
         )
-        Spacer(modifier = Modifier.size(16.dp))
-        MoreImages(moreImages)
         Spacer(modifier = Modifier.size(55.dp))
         Row(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(start = 10.dp)) {
@@ -203,93 +196,6 @@ private fun DetailScreenContent(
                         fontSize = 20.sp,
                         color = Color.White
                     )
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MoreImages(more: Array<String>?) {
-    val gilroy = FontFamily(
-        Font(R.font.gilroy, FontWeight.Normal),
-        Font(R.font.gilroy_bold, FontWeight.Bold)
-    )
-    Spacer(modifier = Modifier.size(24.dp))
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-    ) {
-        Text(
-            text = "More Images", style = TextStyle(
-                fontFamily = gilroy,
-                fontWeight = FontWeight.W700,
-                fontSize = 14.sp,
-                color = Color(0xFF452933)
-            )
-        )
-        Spacer(modifier = Modifier.size(16.dp))
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-
-
-            Card(
-                modifier = Modifier.size(width = 85.dp, height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White,
-                ),
-                shape = RoundedCornerShape(20)
-            ) {
-                AsyncImage(
-                    model = more?.get(0),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-            Card(
-                modifier = Modifier.size(width = 85.dp, height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White,
-                ),
-                shape = RoundedCornerShape(20)
-            ) {
-                AsyncImage(
-                    model = more?.get(1),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-
-            Card(
-                modifier = Modifier.size(width = 85.dp, height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White,
-                ),
-                shape = RoundedCornerShape(20)
-            ) {
-                AsyncImage(
-                    model = more?.get(2),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-            Card(
-                modifier = Modifier.size(width = 85.dp, height = 80.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White,
-                ),
-                shape = RoundedCornerShape(20)
-            ) {
-
-                AsyncImage(
-                    model = more?.get(3),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
                 )
             }
         }

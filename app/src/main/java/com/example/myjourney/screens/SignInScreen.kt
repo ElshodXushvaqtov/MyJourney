@@ -151,7 +151,8 @@ class SignInScreen : ComponentActivity() {
                         user?.displayName,
                         user?.uid,
                         user?.email,
-                        user?.photoUrl.toString()
+                        user?.photoUrl.toString(),
+                        emptyList()
                     )
                     sharedPreferences =
                         context.getSharedPreferences("myShared", Context.MODE_PRIVATE)

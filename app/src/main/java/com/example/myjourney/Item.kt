@@ -44,7 +44,6 @@ fun Item(
             .width(150.dp)
             .height(150.dp)
             .clickable {
-                context.startActivity(Intent(context, DetailsScreen::class.java))
                 if (intent != null) {
                     intent.putExtra("placeName", name)
                     intent.putExtra("placeImg", img)
@@ -52,14 +51,17 @@ fun Item(
 //                    intent.putExtra("Place Category", category)
 //                    intent.putExtra("More Images", moreImages)
                 }
+                context.startActivity(Intent(context, DetailsScreen::class.java))
             },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
     ) {
-        Column(modifier = Modifier.fillMaxSize(),
+        Column(
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween) {
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             AsyncImage(
                 model = img,
                 contentDescription = "Rick Roll",

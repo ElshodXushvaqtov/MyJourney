@@ -13,6 +13,11 @@
         android:theme="@style/Theme.MyJourney"
         tools:targetApi="31">
         <activity
+            android:name=".screens.SavedScreen"
+            android:exported="false"
+            android:label="@string/title_activity_saved_screen"
+            android:theme="@style/Theme.MyJourney" />
+        <activity
             android:name=".screens.PaymentScreen"
             android:exported="false"
             android:label="@string/title_activity_payment_screen"

@@ -2,6 +2,7 @@ package com.example.myjourney.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -43,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myjourney.Item
+import com.example.myjourney.RecommendItem
 import com.example.myjourney.data.PlaceData
 import com.example.myjourney.data.Places
 import com.example.myjourney.ui.theme.MyJourneyTheme
@@ -59,7 +61,9 @@ class SearchScreen : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainSearch()
+                    context = LocalContext.current
+                    val intent = Intent(context, DetailsScreen::class.java)
+                    MainSearch(intent)
                 }
             }
         }
@@ -67,7 +71,7 @@ class SearchScreen : ComponentActivity() {
 }
 
 @Composable
-fun MainSearch() {
+fun MainSearch(intent: Intent) {
     var searchText = remember {
         mutableStateOf(TextFieldValue(""))
     }
@@ -95,9 +99,11 @@ fun MainSearch() {
 
     }
 
-    Column(modifier = Modifier
-        .padding(top = 90.dp)
-        .fillMaxSize())
+    Column(
+        modifier = Modifier
+            .padding(top = 90.dp)
+            .fillMaxSize()
+    )
     {
         val searchedPlaces = places.filter {
             it.name?.contains(searchText.value.text, ignoreCase = true) == true
@@ -113,14 +119,16 @@ fun MainSearch() {
                     item.img?.let { it1 ->
                         item.description?.let { it2 ->
                             item.category?.let { it3 ->
-                                Log.d("itemName", it)
-                                Item(
-                                    name = it,
-                                    img = it1,
-                                    description = it2,
-                                    category = it3,
-                                    context = LocalContext.current
-                                )
+                               Log.d("itemName", it)
+                                    RecommendItem(
+                                        name = it,
+                                        imgUrl = it1,
+                                        description = it2,
+                                        category = it3,
+                                        intent = intent,
+
+                                        )
+                                }
                             }
                         }
                     }
@@ -130,7 +138,6 @@ fun MainSearch() {
         }
 
     }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
