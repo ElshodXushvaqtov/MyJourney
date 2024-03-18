@@ -31,7 +31,7 @@ class UserPanel {
         }
 
         fun FavouritesCreate(name: String) {
-            users.addListenerForSingleValueEvent(object : ValueEventListener {
+            users.child(auth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val retrievedUser = dataSnapshot.getValue(UserData::class.java)
 
