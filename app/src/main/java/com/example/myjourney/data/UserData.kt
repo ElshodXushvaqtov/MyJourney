@@ -16,66 +16,67 @@ class UserPanel {
             return preferences.getString("user", "") ?: ""
         }
 
-        fun FavouriteGet(user: String, callback: (List<String>) -> Unit) {
-            users.child(user).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val retrievedUser = dataSnapshot.getValue(UserData::class.java)
-                    if (retrievedUser != null) {
-                        callback(retrievedUser.favourites)
+        fun FavouriteGet(callback: (List<String>) -> Unit) {
+            users.child(auth.currentUser!!.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val retrievedUser = dataSnapshot.getValue(UserData::class.java)
+                        if (retrievedUser != null) {
+                            callback(retrievedUser.favourites)
+                        }
                     }
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
         }
 
         fun FavouritesCreate(name: String) {
-            users.child(auth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val retrievedUser = dataSnapshot.getValue(UserData::class.java)
+            users.child(auth.currentUser!!.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val retrievedUser = dataSnapshot.getValue(UserData::class.java)
 
-                    if (retrievedUser != null) {
-                        retrievedUser.favourites = retrievedUser.favourites.plus(name)
+                        if (retrievedUser != null && !(retrievedUser.favourites.contains(name))) {
+                            retrievedUser.favourites = retrievedUser.favourites.plus(name)
+                        }
+                        users.child(auth.currentUser!!.uid).setValue(retrievedUser)
                     }
-                    users.child(auth.currentUser!!.uid).setValue(retrievedUser)
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
         }
 
 
         fun FavouritesDelete(name: String) {
-            users.child(auth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val retrievedUser = dataSnapshot.getValue(UserData::class.java)
+            users.child(auth.currentUser!!.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val retrievedUser = dataSnapshot.getValue(UserData::class.java)
 
-                    if (retrievedUser != null) {
-                        retrievedUser.favourites = retrievedUser.favourites.minus(name)
+                        if (retrievedUser != null) {
+                            retrievedUser.favourites = retrievedUser.favourites.minus(name)
+                        }
+                        users.child(auth.currentUser!!.uid).setValue(retrievedUser)
                     }
-                    users.child(auth.currentUser!!.uid).setValue(retrievedUser)
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
         }
 
-        fun isFavourite(user: String, model: String, callback: (Boolean) -> Unit) {
-            users.child(user).addListenerForSingleValueEvent(object : ValueEventListener {
+        fun isFavourite(place_name: String, callback: (Boolean) -> Unit) {
+            users.child(auth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val retrievedUser = dataSnapshot.getValue(UserData::class.java)
                     val favourites = retrievedUser!!.favourites
                     var flag = false
                     if (dataSnapshot.exists()) {
-                        for (item in favourites) {
-                            if (item == model) {
+                            if (favourites.contains(place_name)) {
                                 flag = true
                                 callback(true)
                             }
-                        }
                         if (!flag) callback(false)
                     } else {
                         callback(false)

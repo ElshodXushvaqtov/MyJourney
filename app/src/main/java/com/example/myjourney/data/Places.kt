@@ -5,4 +5,5 @@ data class Places(
     var img: String? = "",
     var description: String? = "",
     var category: String? = "",
+    var isSaved: Boolean? = false
 )

@@ -2,6 +2,7 @@ package com.example.myjourney.screens
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -24,11 +25,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -41,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myjourney.R
+import com.example.myjourney.data.UserPanel
 import com.example.myjourney.screens.ui.theme.MyJourneyTheme
 
 class DetailsScreen : ComponentActivity() {
@@ -49,7 +56,7 @@ class DetailsScreen : ComponentActivity() {
         setContent {
             MyJourneyTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().padding(bottom = 180.dp),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val placeImg = intent.getStringExtra("placeImg")
@@ -88,6 +95,15 @@ private fun DetailScreenContent(
         Font(R.font.gilroy, FontWeight.Normal),
         Font(R.font.gilroy_bold, FontWeight.Bold)
     )
+    val context = LocalContext.current
+    var isSaved by remember {
+        mutableStateOf(false)
+    }
+
+    UserPanel.isFavourite(place_name = pName) {
+        isSaved = it
+    }
+    var text: String
     Column(
         modifier = Modifier
             .padding(start = 10.dp, end = 10.dp, top = 15.dp)
@@ -181,16 +197,31 @@ private fun DetailScreenContent(
                 }
             }
             Spacer(modifier = Modifier.weight(1F))
+
             Button(
-                onClick = {},
+                onClick = {if (!isSaved) {
+                    UserPanel.FavouritesCreate(
+                        pName
+                    )
+                    Toast.makeText(context,"Band qilindi", Toast.LENGTH_SHORT).show()
+                } else {
+                    UserPanel.FavouritesDelete(pName)
+                    isSaved = !isSaved
+                    Toast.makeText(context,"O'chirib tashlandi", Toast.LENGTH_SHORT).show()
+                }},
                 modifier = Modifier
                     .padding(bottom = 56.dp)
                     .size(170.dp, 56.dp),
                 shape = RoundedCornerShape(72.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFFF65734))
             ) {
+                text = if(isSaved){
+                    "Band Qilingan"
+                } else{
+                    "Band Qilish"
+                }
                 Text(
-                    text = "Band Qilish", style = TextStyle(
+                    text = text, style = TextStyle(
                         fontFamily = gilroy,
                         fontWeight = FontWeight.W700,
                         fontSize = 20.sp,

@@ -61,10 +61,10 @@ class SavedScreen : ComponentActivity() {
 fun Saved() {
     val context = LocalContext.current
     var places by remember { mutableStateOf<List<Places>>(emptyList()) }
-    UserPanel.FavouriteGet(UserPanel.getUserSaved(context)) { list ->
+    UserPanel.FavouriteGet { list ->
         PlaceData.FavouritesFilter(list) {
             places = it
-            Log.d("", places.toString())
+            Log.d("", places.toString()+"\n")
         }
     }
     val placesLength: Int = places.size
@@ -86,34 +86,35 @@ fun MyColumn(intent: Intent, placesLength: Int, places: List<Places>) {
         }
     )
 
-    if (places.isEmpty()) {
-        EmptyListIcon()
-    } else {
-        if (loading) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(top = 100.dp, start = 10.dp, end = 10.dp)
-            )
-            {
-                items(placesLength) {
-                    AnimatedShimmer()
-                }
-            }
+
+        if (places.isEmpty()) {
+            EmptyListIcon()
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(
-                    bottom = 100.dp,
-                    start = 10.dp,
-                    end = 10.dp,
-                    top = 100.dp
+            if (loading) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.padding(top = 100.dp, start = 10.dp, end = 10.dp)
                 )
-            ) {
-                items(items = places) { item ->
-                    item.name?.let { it1 ->
-                        item.category?.let { it2 ->
-                            item.description?.let { it3 ->
-                                item.img?.let { it4 ->
+                {
+                    items(placesLength) {
+                        AnimatedShimmer()
+                    }
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.padding(
+                        bottom = 200.dp,
+                        start = 10.dp,
+                        end = 10.dp,
+                        top = 100.dp
+                    )
+                ) {
+                    items(items = places) { item ->
+                        item.name?.let { it1 ->
+                            item.category?.let { it2 ->
+                                item.description?.let { it3 ->
+                                    item.img?.let { it4 ->
                                         RecommendItem(
                                             name = it1,
                                             category = it2,
@@ -121,7 +122,6 @@ fun MyColumn(intent: Intent, placesLength: Int, places: List<Places>) {
                                             imgUrl = it4,
                                             intent = intent
                                         )
-                                    }
                                 }
                             }
                         }
@@ -130,8 +130,7 @@ fun MyColumn(intent: Intent, placesLength: Int, places: List<Places>) {
             }
         }
     }
-
-
+}
 @Composable
 fun EmptyListIcon() {
     Column(

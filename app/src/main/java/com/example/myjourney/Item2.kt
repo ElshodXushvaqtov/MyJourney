@@ -1,6 +1,7 @@
 package com.example.myjourney
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -75,7 +76,7 @@ fun RecommendItem(
             mutableStateOf(false)
         }
 
-        UserPanel.isFavourite(UserPanel.getUserSaved(context), name) {
+        UserPanel.isFavourite(place_name = name) {
             isSaved = it
         }
 
@@ -95,11 +96,16 @@ fun RecommendItem(
             Row(modifier = Modifier.align(Alignment.End)) {
                 IconButton(
                     onClick = {
-                        if (!isSaved) UserPanel.FavouritesCreate(
-                            name
-                        )
-                        else UserPanel.FavouritesDelete(name)
-                        isSaved = !isSaved
+                        if (!isSaved) {
+                            UserPanel.FavouritesCreate(
+                                name
+                            )
+                            Toast.makeText(context,"Band qilindi",Toast.LENGTH_SHORT).show()
+                        } else {
+                            UserPanel.FavouritesDelete(name)
+                            isSaved = !isSaved
+                            Toast.makeText(context,"O'chirib tashlandi",Toast.LENGTH_SHORT).show()
+                        }
                     },
                 ) {
                     if (isSaved) {
@@ -109,8 +115,7 @@ fun RecommendItem(
                         )
                     } else {
                         Image(
-                            painter =
-                            painterResource(id = R.drawable.baseline_favorite_border_24),
+                            painter = painterResource(id = R.drawable.baseline_favorite_border_24),
                             contentDescription = null,
                         )
                     }

@@ -328,16 +328,24 @@ private fun NavBar() {
             )
             Spacer(modifier = Modifier.size(90.dp))
 
-            IconButton(onClick = {}, content = {
-                Icon(
-                    painter = painterResource(id = R.drawable.saved),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .width(30.dp)
-                        .height(30.dp)
+            IconButton(onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        SavedScreen::class.java
+                    )
                 )
             },
+                content = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.saved),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .width(30.dp)
+                            .height(30.dp)
+                    )
+                },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .width(40.dp)
