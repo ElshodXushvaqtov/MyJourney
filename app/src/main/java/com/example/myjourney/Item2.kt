@@ -96,10 +96,9 @@ fun RecommendItem(
                 IconButton(
                     onClick = {
                         if (!isSaved) UserPanel.FavouritesCreate(
-                            UserPanel.getUserSaved(context),
                             name
                         )
-                        else UserPanel.FavouritesDelete(UserPanel.getUserSaved(context), name)
+                        else UserPanel.FavouritesDelete(name)
                         isSaved = !isSaved
                     },
                 ) {

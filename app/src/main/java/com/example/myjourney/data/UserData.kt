@@ -30,15 +30,15 @@ class UserPanel {
             })
         }
 
-        fun FavouritesCreate(user: String, name: String) {
-            users.child(user).addListenerForSingleValueEvent(object : ValueEventListener {
+        fun FavouritesCreate(name: String) {
+            users.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val retrievedUser = dataSnapshot.getValue(UserData::class.java)
 
                     if (retrievedUser != null) {
                         retrievedUser.favourites = retrievedUser.favourites.plus(name)
                     }
-                    users.child(user).child(auth.currentUser!!.uid).setValue(retrievedUser)
+                    users.child(auth.currentUser!!.uid).setValue(retrievedUser)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -47,15 +47,15 @@ class UserPanel {
         }
 
 
-        fun FavouritesDelete(user: String, name: String) {
-            users.child(user).addListenerForSingleValueEvent(object : ValueEventListener {
+        fun FavouritesDelete(name: String) {
+            users.child(auth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val retrievedUser = dataSnapshot.getValue(UserData::class.java)
 
                     if (retrievedUser != null) {
                         retrievedUser.favourites = retrievedUser.favourites.minus(name)
                     }
-                    users.child(user).child(auth.currentUser!!.uid).setValue(retrievedUser)
+                    users.child(auth.currentUser!!.uid).setValue(retrievedUser)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
